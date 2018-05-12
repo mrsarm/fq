@@ -1,6 +1,6 @@
 /* fq.c
 
-   Copyright (C) 2015 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -61,14 +61,13 @@ void fq_data_free_resources(fq_data *data)
  * Counts the frequencies.
  */
 int fq_count(fq_data *data) {
-	int i;
 	int max;
 	if (data->max==0) {
 		max = data->length_in;
 	} else {
 		max = data->max;
 	}
-	for (i=1; i<max; i++) {
+	for (int i=1; i<max; i++) {
 		data->pnode=freqlist_add(data->freql, data->buff_in[i]);
 		if (!data->pnode) {
 			return ERROR_MEM;

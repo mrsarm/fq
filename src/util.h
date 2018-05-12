@@ -1,6 +1,6 @@
 /* util.h
 
-   Copyright (C) 2015 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -33,8 +33,6 @@
 #define ERROR_PARAM						-3				/* Command line parameterization error. */
 #define ERROR_FILE_NOT_FOUND			-5				/* The input file is not found or can not
 														   be opened. */
-#define ERROR_FRECLIST					-8				/* The frequency list is inconsistent. */
-#define ERROR_OVERFLOW					-9				/* Math overflow. */
 
 
 /*

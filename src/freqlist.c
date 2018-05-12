@@ -1,6 +1,6 @@
 /* freqlist.c
 
-   Copyright (C) 2015 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -64,8 +64,7 @@ freqlist* freqlist_create(unsigned char c)
 			l->list->freq=1;
 			l->list->next=l->list->prev=NULL;
 		}
-		int i;
-		for (i=0; i<256; i++)
+		for (int i=0; i<256; i++)
 			l->freqs[i]=0;
 		l->freqs[c]=1;
 		l->length=1;

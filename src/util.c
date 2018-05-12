@@ -1,6 +1,6 @@
 /* util.c
 
-   Copyright (C) 2015 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -59,10 +59,9 @@ void help_param(const char *command_name)
  */
 void error_param(const char *command_name)
 {
-	char msg[100];
-	sprintf(msg, "Error: Invalid options.\n"
+	fprintf(stderr, "Error: Invalid options.\n"
 			"Usage: %s [-hv] [input file] [-m MAX]\n", command_name);
-	error(msg, ERROR_PARAM);
+	exit(ERROR_PARAM);
 }
 
 /*

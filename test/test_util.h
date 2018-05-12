@@ -1,6 +1,6 @@
 /* test_util.h
 
-   Copyright (C) 2015 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include <fq.h>
 
 
-#define OUTPUT_VERBOSE				TRUE
+#define OUTPUT_VERBOSE				FALSE
 
 
 /**

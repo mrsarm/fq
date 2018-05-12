@@ -12,11 +12,11 @@ Build and execute
 
 1. From the source directory, generate the "Makefile":
 
-    $ cmake .
+       $ cmake .
 
 2. *Make* the project and generate the executable "fq".
 
-    $ make
+       $ make
 
 3. Then execute with:
 
@@ -34,8 +34,8 @@ To clean all compiled files and generated "Makefiles":
 About
 -----
 
-Source: https://bitbucket.org/mrsarm/fq
+Source: https://github.com/mrsarm/fq
 
-Authors: (2015) Mariano Ruiz <mrsarm@gmail.cm>
+Authors: (2015-2018) Mariano Ruiz <mrsarm@gmail.cm>
 
 License: GPL-3
