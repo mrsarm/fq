@@ -17,8 +17,9 @@
 .settings
 Debug
 
-# IDEA Project files
+# IDEA/CLion Project files
 .idea
+cmake-build-debug/
 
 CMake Project files
 CMakeCache.txt
