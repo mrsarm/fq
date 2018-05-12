@@ -20,7 +20,7 @@ Build and execute
 
 3. Then execute with:
 
-    $ out/fq
+       $ out/fq
 
 To clean the compiled binaries and compiled modules:
 
