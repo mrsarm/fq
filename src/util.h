@@ -24,8 +24,12 @@
 
 #include <stdio.h>
 
+#ifndef TRUE
+
 #define TRUE							1
 #define FALSE							0
+
+#endif /* TRUE */
 
 #define INPUT_FILENAME					"in"			/* Default input file name. */
 
@@ -39,19 +43,6 @@
  * Returns the size of the file in bytes.
  */
 long filesize(FILE *f);
-
-
-/*
- * Print a parametrization error in the stderr, and aborts the program.
- * @command_name: the name of the command that was invoked this tool.
- */
-void error_param(const char *command_name);
-
-/*
- * Print parametrization help message in the stdout, and aborts the program.
- * @command_name: the name of the command that was invoked this tool.
- */
-void help_param(const char *command_name);
 
 /*
  * Print an error in the stderr, and aborts the program.

@@ -41,29 +41,6 @@ long filesize(FILE *f)
 	return len;
 }
 
-
-/*
- * Print parametrization help message in the stdout, and aborts the program.
- * @command_name: the name of the command that was invoked this tool.
- */
-void help_param(const char *command_name)
-{
-	printf("Usage: %s [-hv] [input file] [-m MAX]\n", command_name);
-	exit(0);
-}
-
-
-/*
- * Print a parametrization error in the stderr, and aborts the program.
- * @command_name: the name of the command that was invoked this tool.
- */
-void error_param(const char *command_name)
-{
-	fprintf(stderr, "Error: Invalid options.\n"
-			"Usage: %s [-hv] [input file] [-m MAX]\n", command_name);
-	exit(ERROR_PARAM);
-}
-
 /*
  * Print an error in the stderr, and aborts the program.
  * @msg: the message to be printed.

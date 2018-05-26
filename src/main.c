@@ -21,10 +21,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <getopt.h>
+#include <ctype.h>
 #include "util.h"
 #include "freqlist.h"
 #include "fq.h"
+
+
+#define USAGE       "Usage: %s [-hv] [FILE] [-c MAX]\n" \
+					"Print the frequency table to standard output.\n" \
+					"\n" \
+					"Options:\n" \
+	 				"  -v		verbose mode, print frequency table\n" \
+	  				"    		for each character in the stream\n" \
+					"  -c NUM	Max number of bytes to count\n" \
+					"  -h		display this help and exit\n" \
+					"\n" \
+					"\"Frequency Counter\" project v0.1b: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command options */
@@ -69,56 +82,43 @@ fq_data* init_options(int argc, char *argv[])
 	fq_data* data = (fq_data*) malloc(sizeof(fq_data));
 	/* Read the files names from the parameters,
 	  else use the defaults options. */
-	int is_params = FALSE;
 	data->verbose = FALSE;
 	data->max = 0l;
-	if (argc>1 && *argv[1]=='-') {
-		is_params = TRUE;
-		if (strchr(argv[1], 'h')) {
-			if (argc>2) {
-				error_param(argv[0]);
-			}
-			help_param(argv[0]);
-		}
-		if (strchr(argv[1], 'v')) {
-			data->verbose = TRUE;
-		}
+    opterr = 0;
+	int c;
+	while ((c = getopt(argc, argv, "hvc:")) != -1) {
+        switch (c) {
+            case 'v':
+                data->verbose = TRUE;
+                break;
+            case 'c':
+                data->max = (unsigned long) atol(optarg);
+                break;
+            case 'h':
+				printf(USAGE, argv[0]);
+				exit(0);
+            case '?':
+                if (optopt == 'c') {
+                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                } else if (isprint (optopt)) {
+                    fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+					fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
+                } else {
+                    fprintf(stderr,
+                            "Unknown option character `\\x%x'.\n",
+                            optopt);
+                }
+				exit(ERROR_PARAM);
+        }
 	}
-	if (argc==1) {
-		data->filename_in = INPUT_FILENAME;
-	} else if (argc==2) {
-		if (is_params) {
-			data->filename_in = INPUT_FILENAME;
-		} else {
-			data->filename_in = argv[1];
-		}
-	} else if (argc==3) {
-		if (is_params) {
-			data->filename_in = argv[2];
-		} else {
-			error_param(argv[0]);
-		}
-	}  else if (argc==4) {
-		if (is_params) {
-			error_param(argv[0]);
-		} else {
-			data->filename_in = argv[1];
-			if (strchr(argv[2], 'm')) {
-				data->max = (unsigned long) atol(argv[3]);
-			}
-		}
-	}   else if (argc==5) {
-		if (!is_params) {
-			error_param(argv[0]);
-		} else {
-			data->filename_in = argv[2];
-			if (strchr(argv[3], 'm')) {
-				data->max = (unsigned long) atol(argv[4]);
-			}
-		}
-	} else {
-		error_param(argv[0]);
-	}
+    data->filename_in = NULL;
+    for (int index = optind; index < argc; index++) {
+        data->filename_in = argv[index];
+        break;
+    }
+    if (data->filename_in == NULL) {
+        data->filename_in = INPUT_FILENAME;
+    }
 	return data;
 }
 

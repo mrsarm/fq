@@ -27,7 +27,7 @@
 
 /*
  * Contains the main information about
- * the encoding process: input file, output file, buffers, etc.
+ * the encoding process: input file, buffers, etc.
  */
 typedef struct _fq_data {
 	char *filename_in;			/* Input file name. */
