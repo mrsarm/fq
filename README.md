@@ -38,4 +38,4 @@ Source: https://github.com/mrsarm/fq
 
 Authors: (2015-2018) Mariano Ruiz <mrsarm@gmail.cm>
 
-License: GPL-3
+License: LGPL-3
