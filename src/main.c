@@ -28,7 +28,7 @@
 #include "fq.h"
 
 
-#define USAGE       "Usage: %s [-hv] [FILE] [-c MAX]\n" \
+#define USAGE       "Usage: %s [-hv] [FILE] [-c NUM]\n" \
 					"Print the frequency table to standard output.\n" \
 					"\n" \
 					"Options:\n" \
