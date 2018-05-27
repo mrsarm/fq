@@ -1,4 +1,4 @@
-/* util.c
+/* const.h
 
    Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
@@ -18,36 +18,22 @@
    <http://www.gnu.org/licenses/>.  */
 
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "util.h"
+#ifndef __FQ_CONST_H
+#define __FQ_CONST_H
 
 
-/*
- * Returns the size of the file in bytes.
- */
-long filesize(FILE *f)
-{
-	if (f==NULL) return 0;
+#ifndef TRUE
 
-	long int pos_now, len;
-	pos_now=ftell(f);
-	fseek(f, 0L, SEEK_END);
-	len=ftell(f);
-	fseek(f, pos_now, SEEK_SET);
+#define TRUE							1
+#define FALSE							0
 
-	return len;
-}
+#endif /* TRUE */
 
-/*
- * Print an error in the stderr, and aborts the program.
- * @msg: the message to be printed.
- * @error_code: the program will exit with this number error.
- */
-void error(const char *msg, int error_code)
-{
-	fprintf(stderr, msg);
-	exit(error_code);
-}
+#define DEFAULT_BUFFER_SIZE				4096			/* Default input file buffer size in bytes. */
+
+#define ERROR_MEM						-2				/* Insufficient memory error. */
+#define ERROR_PARAM						-3				/* Command line parametrization error. */
+#define ERROR_FILE_NOT_FOUND			-5				/* The input file is not found or can not
+														   be opened. */
+
+#endif /* __FQ_CONST_H */

@@ -18,7 +18,7 @@
    <http://www.gnu.org/licenses/>.  */
 
 
-#include "util.h"
+#include "const.h"
 #include "freqlist.h"
 #include <stdlib.h>
 

@@ -20,7 +20,7 @@
 
 #include <stdlib.h>
 #include "test_util.h"
-#include "util.h"
+#include "const.h"
 
 
 /**
@@ -28,13 +28,15 @@
  */
 fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length) {
 
-	fq_data* data = (fq_data*) malloc(sizeof(fq_data));
-	if (!data) error("Error: Insufficient memory error.\n", ERROR_MEM);
+	fq_data* data = fq_data_init();
+	if (!data) {
+		fprintf(stderr, "Error: Insufficient memory error.\n");
+		exit(ERROR_MEM);
+	}
 	data->verbose = OUTPUT_VERBOSE;
-	data->buff_in=buff_in;
-	data->length_in = buff_in_length;
-	data->freql=freqlist_create(data->buff_in[0]);
-	if (!data->freql) error_mem(free_resources, data);
+	// Initialize with a memory stream
+	fq_data_init_resources_fi(data, fmemopen(buff_in, buff_in_length, "rb"));
+
 	int r = fq_count(data);
 	switch (r) {
 		case ERROR_MEM:
@@ -43,7 +45,7 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length) {
 
 	freqlist_fprintf("> Final list lfrec\n",
 					 data->freql, stdout);
-	if (OUTPUT_VERBOSE) printf("\n-------------------------------------\n\n");
+	if (data->verbose) printf("\n-------------------------------------\n\n");
 	return data;
 }
 

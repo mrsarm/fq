@@ -20,28 +20,91 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "fq.h"
-#include "util.h"
+#include "const.h"
 #include "freqlist.h"
 
 
 /*
- * Initialization of input/output data structures.
+ * Return fq_data struct initialized with
+ * default values.
+ */
+fq_data *fq_data_init(void) {
+	fq_data* data = (fq_data*) malloc(sizeof(fq_data));
+	if (data) {
+		data->verbose = FALSE;
+		data->max = 0l;
+		data->filename_in = NULL;
+		data->fi = NULL;
+		data->freql = NULL;
+		data->pnode = NULL;
+		data->buffer_size = DEFAULT_BUFFER_SIZE;
+	}
+	return data;
+}
+
+
+/*
+ * Initialization of input/output data structures
+ * from the given file name.
+ * Opens data->filename_in in "rb" mode, if it's
+ * NULL, use stdin as data->fi file.
  * Returns `0` if no errors, or an error code.
  */
-int fq_data_init_resources(fq_data *data)
+int fq_data_init_resources(fq_data *data, char *filename_in)
 {
-	/* Open the file in binary mode / read only, and load in the buffer. */
-	data->fi=fopen(data->filename_in, "rb");
-	if (!data->fi) {
-		return ERROR_FILE_NOT_FOUND;
+	if (filename_in) {
+		data->filename_in = malloc(strlen(filename_in)+1);
+		strcpy(data->filename_in, filename_in);
 	}
-	data->length_in =filesize(data->fi);
-	data->buff_in=(unsigned char *)malloc(data->length_in);
+	/* Open the file in binary mode / read only */
+	if (data->filename_in) {
+		data->fi = fopen(data->filename_in, "rb");
+		if (!data->fi) {
+			return ERROR_FILE_NOT_FOUND;
+		}
+	} else {
+		data->fi = stdin;				// stdin -> buffer size
+		data->buffer_size = 1;			// must be 1 to be able to see changes
+	}									// once user press Enter or Ctrl+C
+	data->length_in = 0l;
+	data->buff_in=(unsigned char *)malloc(data->buffer_size);
 	if (!data->buff_in)
 		return ERROR_MEM;
-	fread(data->buff_in, data->length_in, 1, data->fi);
 	return 0;
+}
+
+
+/*
+ * Initialization of input/output data structures
+ * from the given file.
+ * Returns `0` if no errors, or an error code.
+ */
+int fq_data_init_resources_fi(fq_data *data, FILE *fi)
+{
+	data->fi = fi;
+	data->length_in = 0l;
+	data->buff_in=(unsigned char *)malloc(data->buffer_size);
+	if (!data->buff_in)
+		return ERROR_MEM;
+	return 0;
+}
+
+
+/*
+ * Initializes the freql struct of data
+ * with the first symbol available in the
+ * input stream. Return a pointer
+ * to the struct created.
+ */
+int fq_data_init_freql(fq_data *data) {
+	int first_symb = fgetc(data->fi);
+	if (first_symb != EOF) {
+		data->length_in++;
+		data->freql = freqlist_create(first_symb);
+	}
+	return data->freql;
 }
 
 
@@ -61,30 +124,40 @@ void fq_data_free_resources(fq_data *data)
  * Counts the frequencies.
  */
 int fq_count(fq_data *data) {
-	int max;
-	if (data->max==0) {
-		max = data->length_in;
-	} else {
-		max = data->max;
-	}
-	for (int i=1; i<max; i++) {
-		data->pnode=freqlist_add(data->freql, data->buff_in[i]);
-		if (!data->pnode) {
-			return ERROR_MEM;
-		}
-		if (data->verbose)
-		if(data->verbose) {
-			freqlist_fprintf(NULL, data->freql, stdout);
-			printf("Symb.: '%c' %2X\n\n",
-				   (data->buff_in[i]<0x7F && data->buff_in[i]>=0x20)?data->buff_in[i]:'.',
-				   data->buff_in[i]);
+	if (!data->freql) {
+		if (!fq_data_init_freql(data)) {
+			error_mem(fq_data_free_resources, data);
 		}
 	}
+	size_t _size;
+	int _max_reached = FALSE;
+	do {
+		size_t buffer_size = data->max!=0 && data->max < data->buffer_size ?
+														data->max : data->buffer_size;
+		_size = fread(data->buff_in, 1, buffer_size, data->fi);
+		for (int i = 0; i < _size; ++i) {
+			if (data->max>0l && data->length_in >= data->max) {
+				_max_reached = TRUE;
+				break;
+			}
+			data->pnode=freqlist_add(data->freql, data->buff_in[i]);
+			if (!data->pnode) {
+				return ERROR_MEM;
+			}
+			if(data->verbose) {
+				freqlist_fprintf(NULL, data->freql, stdout);
+				printf("Symb.: '%c' %2X\n\n",
+					   (data->buff_in[i]<0x7F && data->buff_in[i]>=0x20)?data->buff_in[i]:'.',
+					   data->buff_in[i]);
+			}
+			data->length_in++;
+		}
+	} while (_size>0 && !_max_reached);
 	return 0;
 }
 
 /*
- * Print an insufficient memory error in the stderr, and aborts
+ * Prints an insufficient memory error in the stderr, and aborts
  * the program after invoking the fq_data_free_resources function.
  */
 void error_mem(void(free_resources)(fq_data*), fq_data* data)
@@ -92,5 +165,6 @@ void error_mem(void(free_resources)(fq_data*), fq_data* data)
 	if (free_resources) {
 		free_resources(data);
 	}
-	error("Error: Insufficient memory error.\n", ERROR_MEM);
+	fprintf(stderr, "Error: Insufficient memory error.\n");
+	exit(ERROR_MEM);
 }

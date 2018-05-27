@@ -23,7 +23,8 @@
 #include <string.h>
 #include <getopt.h>
 #include <ctype.h>
-#include "util.h"
+#include <signal.h>
+#include "const.h"
 #include "freqlist.h"
 #include "fq.h"
 
@@ -40,14 +41,20 @@
 					"\"Frequency Counter\" project v0.1b: fq <https://github.com/mrsarm/fq>\n"
 
 
-/* Initialize the global variables with the command options */
+/* Initialize the global variables with the command arguments */
 fq_data* init_options(int argc, char *argv[]);
+
+/* Ctrl+C handler */
+void ctrlc_handler(int sig);
+
+fq_data* data;
 
 int main(int argc, char *argv[])
 {
-	fq_data* data = init_options(argc, argv);
+	data = init_options(argc, argv);			// Initialize data with command arguments
+	signal(SIGINT, ctrlc_handler);				// Initialize Ctrl+C signal
 
-	int r = fq_data_init_resources(data);
+	int r = fq_data_init_resources(data, NULL);	// Initialize resources (files, buffers)
 	switch (r) {
 		case ERROR_FILE_NOT_FOUND:
 			fprintf(stderr, "%s error: The input file '%s' cannot be opened.\n",
@@ -57,20 +64,16 @@ int main(int argc, char *argv[])
 		case ERROR_MEM:
 			error_mem(fq_data_free_resources, data);
 	}
-
-	data->freql=freqlist_create(data->buff_in[0]);
-	if (!data->freql) error_mem(fq_data_free_resources, data);
-
-	r = fq_count(data);
+	r = fq_count(data);							// Count the symbols
 	switch (r) {
 		case ERROR_MEM:
 			error_mem(fq_data_free_resources, data);
 	}
 
-	freqlist_fprintf("> Final list lfrec\n", data->freql, stdout);
+	freqlist_fprintf("> Final list lfrec\n",	// Print the frequencies
+					 data->freql, stdout);
 
-	/* Close the file and free the memory buffers. */
-	fq_data_free_resources(data);
+	fq_data_free_resources(data);				// Close file and free the memory buffers
 
 	return 0;
 }
@@ -79,11 +82,8 @@ int main(int argc, char *argv[])
 /* Initialize the global variables with command options */
 fq_data* init_options(int argc, char *argv[])
 {
-	fq_data* data = (fq_data*) malloc(sizeof(fq_data));
-	/* Read the files names from the parameters,
-	  else use the defaults options. */
-	data->verbose = FALSE;
-	data->max = 0l;
+	fq_data* data = fq_data_init();
+	if (!data) error_mem(NULL, NULL);
     opterr = 0;
 	int c;
 	while ((c = getopt(argc, argv, "hvc:")) != -1) {
@@ -111,15 +111,23 @@ fq_data* init_options(int argc, char *argv[])
 				exit(ERROR_PARAM);
         }
 	}
-    data->filename_in = NULL;
     for (int index = optind; index < argc; index++) {
         data->filename_in = argv[index];
         break;
     }
-    if (data->filename_in == NULL) {
-        data->filename_in = INPUT_FILENAME;
-    }
 	return data;
+}
+
+
+/* Ctrl+C handler */
+void ctrlc_handler(int sig) {
+	printf("\n");
+
+	if (data && data->freql) {
+		freqlist_fprintf("> Final list lfrec\n",    // Print the frequencies
+						 data->freql, stdout);
+	}
+	exit(0);
 }
 
 /*  End program.  */

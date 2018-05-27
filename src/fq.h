@@ -32,6 +32,7 @@
 typedef struct _fq_data {
 	char *filename_in;			/* Input file name. */
 	unsigned char *buff_in;		/* Input buffer. */
+	int buffer_size;			/* Input buffer size. */
 	FILE *fi;					/* Input file manager. */
 	unsigned long length_in;	/* File size in bytes, */
 	unsigned long max;			/* Max characters to be read */
@@ -43,10 +44,38 @@ typedef struct _fq_data {
 
 
 /*
+ * Return fq_data struct initialized with
+ * default values.
+ */
+fq_data* fq_data_init(void);
+
+
+
+/*
  * Initialization of input data structures.
+ * Opens data->filename_in in "rb" mode, if it's
+ * NULL, use stdin as data->fi file.
  * Returns `0` if no errors, or an error code.
  */
-int fq_data_init_resources(fq_data *data);
+int fq_data_init_resources(fq_data *data, char *filename_in);
+
+
+/*
+ * Initialization of input/output data structures
+ * from the given file.
+ * Returns `0` if no errors, or an error code.
+ */
+int fq_data_init_resources_fi(fq_data *data, FILE *fi);
+
+
+/*
+ * Initializes the freql struct of data
+ * with the first symbol available in the
+ * input stream. Return a pointer
+ * to the struct created.
+ */
+int fq_data_init_freql(fq_data *data);
+
 
 /*
  * Free all resources of the application.
@@ -61,7 +90,7 @@ int fq_count(fq_data *data);
 
 
 /*
- * Print an insufficient memory error in the stderr, and aborts
+ * Prints an insufficient memory error in the stderr, and aborts
  * the program after invoking the fq_data_free_resources function.
  */
 void error_mem(void(free_resources)(fq_data*), fq_data* data);
