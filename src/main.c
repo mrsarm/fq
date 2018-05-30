@@ -34,11 +34,11 @@
 					"\n" \
 					"Options:\n" \
 	 				"  -v		verbose mode, print frequency table\n" \
-	  				"    		for each character in the stream\n" \
+	  				"    		for each byte in the stream\n" \
 					"  -c NUM	Max number of bytes to count\n" \
 					"  -h		display this help and exit\n" \
 					"\n" \
-					"\"Frequency Counter\" project v0.1b: fq <https://github.com/mrsarm/fq>\n"
+					"\"Frequency Counter\" project v1.0: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command arguments */
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 			error_mem(fq_data_free_resources, data);
 	}
 
-	freqlist_fprintf("> Final list lfrec\n",	// Print the frequencies
+	freqlist_fprintf("> Final frequency table\n",	// Print the frequencies
 					 data->freql, stdout);
 
 	fq_data_free_resources(data);				// Close file and free the memory buffers
@@ -124,7 +124,7 @@ void ctrlc_handler(int sig) {
 	printf("\n");
 
 	if (data && data->freql) {
-		freqlist_fprintf("> Final list lfrec\n",    // Print the frequencies
+		freqlist_fprintf("> Final frequency table\n",    // Print the frequencies
 						 data->freql, stdout);
 	}
 	exit(0);

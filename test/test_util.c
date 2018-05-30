@@ -43,7 +43,7 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length) {
 			error_mem(free_resources, data);
 	}
 
-	freqlist_fprintf("> Final list lfrec\n",
+	freqlist_fprintf("> Final frequency table\n",
 					 data->freql, stdout);
 	if (data->verbose) printf("\n-------------------------------------\n\n");
 	return data;
