@@ -38,7 +38,7 @@
 					"  -c NUM	Max number of bytes to count\n" \
 					"  -h		display this help and exit\n" \
 					"\n" \
-					"\"Frequency Counter\" project v1.0: fq <https://github.com/mrsarm/fq>\n"
+					"\"Frequency Counter\" project v1.0.1: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command arguments */
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	data = init_options(argc, argv);			// Initialize data with command arguments
 	signal(SIGINT, ctrlc_handler);				// Initialize Ctrl+C signal
 
-	int r = fq_data_init_resources(data, NULL);	// Initialize resources (files, buffers)
+	int r = fq_data_init_resources(data, NULL);	// Initialize resources (files)
 	switch (r) {
 		case ERROR_FILE_NOT_FOUND:
 			fprintf(stderr, "%s error: The input file '%s' cannot be opened.\n",
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 	freqlist_fprintf("> Final frequency table\n",	// Print the frequencies
 					 data->freql, stdout);
 
-	fq_data_free_resources(data);				// Close file and free the memory buffers
+	fq_data_free_resources(data);				// Close file and free memory
 
 	return 0;
 }

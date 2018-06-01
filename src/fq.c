@@ -39,7 +39,6 @@ fq_data *fq_data_init(void) {
 		data->fi = NULL;
 		data->freql = NULL;
 		data->pnode = NULL;
-		data->buffer_size = DEFAULT_BUFFER_SIZE;
 	}
 	return data;
 }
@@ -65,13 +64,9 @@ int fq_data_init_resources(fq_data *data, char *filename_in)
 			return ERROR_FILE_NOT_FOUND;
 		}
 	} else {
-		data->fi = stdin;				// stdin -> buffer size
-		data->buffer_size = 1;			// must be 1 to be able to see changes
-	}									// once user press Enter or Ctrl+C
+		data->fi = stdin;
+	}
 	data->length_in = 0l;
-	data->buff_in=(unsigned char *)malloc(data->buffer_size);
-	if (!data->buff_in)
-		return ERROR_MEM;
 	return 0;
 }
 
@@ -85,9 +80,6 @@ int fq_data_init_resources_fi(fq_data *data, FILE *fi)
 {
 	data->fi = fi;
 	data->length_in = 0l;
-	data->buff_in=(unsigned char *)malloc(data->buffer_size);
-	if (!data->buff_in)
-		return ERROR_MEM;
 	return 0;
 }
 
@@ -114,7 +106,6 @@ int fq_data_init_freql(fq_data *data) {
 void fq_data_free_resources(fq_data *data)
 {
 	if (data->fi) fclose(data->fi);
-	if (data->buff_in) free(data->buff_in);
 	if (data->freql) freqlist_free(data->freql);
 	free(data);
 }
@@ -129,30 +120,28 @@ int fq_count(fq_data *data) {
 			error_mem(fq_data_free_resources, data);
 		}
 	}
-	size_t _size;
 	int _max_reached = FALSE;
 	do {
-		size_t buffer_size = data->max!=0 && data->max < data->buffer_size ?
-														data->max : data->buffer_size;
-		_size = fread(data->buff_in, 1, buffer_size, data->fi);
-		for (int i = 0; i < _size; ++i) {
-			if (data->max>0l && data->length_in >= data->max) {
-				_max_reached = TRUE;
-				break;
-			}
-			data->pnode=freqlist_add(data->freql, data->buff_in[i]);
-			if (!data->pnode) {
-				return ERROR_MEM;
-			}
-			if(data->verbose) {
-				freqlist_fprintf(NULL, data->freql, stdout);
-				printf("Symb.: '%c' %2X\n\n",
-					   (data->buff_in[i]<0x7F && data->buff_in[i]>=0x20)?data->buff_in[i]:'.',
-					   data->buff_in[i]);
-			}
-			data->length_in++;
+		unsigned char symbol = fgetc(data->fi);	// Buffer is not used due
+		if( feof(data->fi) ) {					// that any modern OS
+			break ;								// use one when we use
+		}										// the libc library for I/O
+		if (data->max>0l && data->length_in >= data->max) {
+			_max_reached = TRUE;
+			break;
 		}
-	} while (_size>0 && !_max_reached);
+		data->pnode=freqlist_add(data->freql, symbol);
+		if (!data->pnode) {
+			return ERROR_MEM;
+		}
+		if(data->verbose) {
+			freqlist_fprintf(NULL, data->freql, stdout);
+			printf("Symb.: '%c' %2X\n\n",
+				   (symbol<0x7F && symbol>=0x20)?symbol:'.',
+				   symbol);
+		}
+		data->length_in++;
+	} while (!_max_reached);
 	return 0;
 }
 

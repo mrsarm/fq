@@ -27,12 +27,10 @@
 
 /*
  * Contains the main information about
- * the encoding process: input file, buffers, etc.
+ * the encoding process: input file, frequency list, etc.
  */
 typedef struct _fq_data {
 	char *filename_in;			/* Input file name. */
-	unsigned char *buff_in;		/* Input buffer. */
-	int buffer_size;			/* Input buffer size. */
 	FILE *fi;					/* Input file manager. */
 	unsigned long length_in;	/* File size in bytes, */
 	unsigned long max;			/* Max characters to be read */

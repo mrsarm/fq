@@ -29,8 +29,6 @@
 
 #endif /* TRUE */
 
-#define DEFAULT_BUFFER_SIZE				4096			/* Default input file buffer size in bytes. */
-
 #define ERROR_MEM						-2				/* Insufficient memory error. */
 #define ERROR_PARAM						-3				/* Command line parametrization error. */
 #define ERROR_FILE_NOT_FOUND			-5				/* The input file is not found or can not
