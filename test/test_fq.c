@@ -22,30 +22,44 @@
 #include "fq.h"
 #include "freqlist.h"
 #include "test_util.h"
-#include "test_datasets.h"
 
+#define BUFF_LEN_1			10
+#define EXPECTED_FQ_LEN_1	 5
+
+#define BUFF_LEN_2			12
+#define EXPECTED_FQ_LEN_2	 8
 
 CHEAT_DECLARE(
-		fq_data* data;
+	fq_data* data;
+
+	/***************
+	 *  DATA SET 1
+	 ***************/
+	unsigned char buff_1[BUFF_LEN_1] =					{ 4, 2, 3, 3, 6, 3, 4, 2, 6, 8 };
+	unsigned int expected_fq_1[EXPECTED_FQ_LEN_1][2] =	{{3,3}, {2,2}, {4,2}, {6,2}, {8,1}};
+
+	/***************
+	 *  DATA SET 2
+	 ***************/
+	unsigned char buff_2[BUFF_LEN_2] =					{ 0, 5, 3, 2, 2, 8, 5, 0, 6, 18, 10, 0 };
+	unsigned int expected_fq_2[EXPECTED_FQ_LEN_2][2] =	{{0,3}, {2,2}, {5,2}, {3,1}, {6,1}, {8,1}, {10,1}, {18,1}};
 )
+
 CHEAT_TEAR_DOWN(
 	if (data) {
 		free_resources(data);
 	}
 )
 
-/***************
- *  DATA SET 1
- ***************/
+
+/* Test DATA SET 1 */
 CHEAT_TEST(expected_buff_out_ok,
-	data=count_buff(buff_in_1, BUFF_IN_LENGTH_1);
-	cheat_assert(  freqlist_check(data->freql, expected_freqlist_1, EXPECTED_FREQLIST_LENGTH_1)  );
+	data=count_buff(buff_1, BUFF_LEN_1);
+	cheat_assert(  freqlist_check(data->freql, expected_fq_1, EXPECTED_FQ_LEN_1)  );
 )
 
-/***************
- *  DATA SET 2
- ***************/
+/* Test DATA SET 2 */
 CHEAT_TEST(expected_buff_out_2_ok,
-           data=count_buff(buff_in_2, BUFF_IN_LENGTH_2);
-                   cheat_assert(  freqlist_check(data->freql, expected_freqlist_2, EXPECTED_FREQLIST_LENGTH_2)  );
+   data=count_buff(buff_2, BUFF_LEN_2);
+   cheat_assert(  freqlist_check(data->freql, expected_fq_2, EXPECTED_FQ_LEN_2)  );
 )

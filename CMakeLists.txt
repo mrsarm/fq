@@ -15,7 +15,6 @@ add_executable(fq src/main.c ${BASE_SOURCE_FILES})
 
 set(TEST_SOURCE_FILES
     test/test_util.c
-    test/test_datasets.c
     test/test_fq.c)
 
 add_executable(test_fq ${TEST_SOURCE_FILES} ${BASE_SOURCE_FILES})
