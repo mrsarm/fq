@@ -96,6 +96,7 @@ int fq_data_init_freql(fq_data *data) {
 		data->length_in++;
 		data->freql = freqlist_create(first_symb);
 	}
+	data->freql->autosort = data->verbose;
 	return data->freql;
 }
 
@@ -142,8 +143,12 @@ int fq_count(fq_data *data) {
 		}
 		data->length_in++;
 	} while (!_max_reached);
+	if (!data->freql->autosort) {
+		freqlist_sort(data->freql);
+	}
 	return 0;
 }
+
 
 /*
  * Prints an insufficient memory error in the stderr, and aborts

@@ -69,6 +69,7 @@ freqlist* freqlist_create(unsigned char c)
 		l->freqs[c]=1;
 		l->length=1;
 		l->size=1L;
+		l->autosort = FALSE;
 	}
 	return l;
 }
@@ -133,7 +134,9 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c)
 		pnode1->freq++;
 		l->freqs[c]++;
 		l->size++;
-		pnode1 = _freqlist_promote(l, pnode1);
+		if (l->autosort) {
+			pnode1 = _freqlist_promote(l, pnode1);
+		}
 		return pnode1;
 	}
 
@@ -311,6 +314,69 @@ node_freqlist *_freqlist_dispromote(freqlist *l, node_freqlist *pnode)
 		l->list=pnode2;
 	}
 	return pnode1;
+}
+
+/*
+ * Swap position with the next element in the list.
+ *
+ *     pnode0          pnode0	(could be NULL)
+ *     pnode1    |-->  *pnode
+ *     *pnode  ---     pnode1
+ *     pnode2          pnode2	(could be NULL)
+ *
+ * If pnode0 is NULL, then l->list = pnode (first element
+ * in the list).
+ *
+ * Returns 1 if the element were swapped, otherwise 0
+ */
+int _freqlist_swap_with_prev(freqlist *l, node_freqlist * pnode) {
+	if (pnode->prev) {
+		node_freqlist * pnode1 = pnode->prev;
+		node_freqlist * pnode0 = pnode1->prev;
+		node_freqlist * pnode2 = pnode->next;
+		if (pnode0) {
+			pnode0->next = pnode;
+		} else {
+			l->list = pnode;
+		}
+		pnode->prev = pnode0;
+		pnode->next = pnode1;
+		pnode1->prev = pnode;
+		pnode1->next = pnode2;
+		if (pnode2) {
+			pnode2->prev = pnode1;
+		}
+		unsigned char pnode_pos = pnode->pos;
+		pnode->pos = pnode1->pos;
+		pnode1->pos = pnode_pos;
+		return 1;
+	}
+	return 0;
+}
+
+
+/*
+ * Sorts the frequencies in case
+ * aren't sort.
+ * Returns the number swaps made.
+ */
+int freqlist_sort(freqlist *l) {
+	int swaps = 0;
+	if (!l->autosort) {
+		// Gnome sort implementation
+		node_freqlist * pnode = l->list;
+		while (pnode) {
+			if (pnode == l->list || pnode->freq <= pnode->prev->freq) {
+				pnode = pnode->next;
+			} else {
+				//node_freqlist * pnode_prev = pnode->prev;
+				/* swap pnode and pnode->prev */
+				_freqlist_swap_with_prev(l, pnode);
+				swaps++;
+			}
+		}
+	}
+	return swaps;
 }
 
 

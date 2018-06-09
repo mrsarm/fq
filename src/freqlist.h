@@ -60,6 +60,8 @@ typedef struct _freqlist
 {
 	node_freqlist *list;					/* Pointer to the first node
 											   (with the highest frequency). */
+	int autosort;							/* TRUE if the list must be sorted
+											   each time a simbol is added */
 	unsigned char freqs[256];				/* Frequency array of each symbol. */
 	unsigned int length;					/* Numbers of different symbols
 											   in the list. */
@@ -109,6 +111,14 @@ node_freqlist *freqlist_sub(freqlist *l, unsigned char c);
  * @verbose: TRUE to print the freql.
  */
 void freqlist_fprintf(const char *msg, const freqlist *freql, FILE *f);
+
+
+/*
+ * Sorts the frequencies in case
+ * aren't sort.
+ * Returns the number swaps made.
+ */
+int freqlist_sort(freqlist *l);
 
 
 /*

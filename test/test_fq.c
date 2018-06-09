@@ -63,3 +63,18 @@ CHEAT_TEST(expected_buff_out_2_ok,
    data=count_buff(buff_2, BUFF_LEN_2);
    cheat_assert(  freqlist_check(data->freql, expected_fq_2, EXPECTED_FQ_LEN_2)  );
 )
+
+
+/****************************
+ *  DATA SET 3: word "banana"
+ ****************************/
+#define BUFF_LEN_3			 6
+#define EXPECTED_FQ_LEN_3	 3
+CHEAT_DECLARE(
+	unsigned char buff_3[BUFF_LEN_3] =					{ 'b', 'a', 'n', 'a', 'n', 'a' };
+	unsigned int expected_fq_3[EXPECTED_FQ_LEN_3][2] =	{{'a',3}, {'n',2}, {'b',1}};
+)
+CHEAT_TEST(expected_buff_out_3_ok,
+   data=count_buff(buff_3, BUFF_LEN_3);
+   cheat_assert(  freqlist_check(data->freql, expected_fq_3, EXPECTED_FQ_LEN_3)  );
+)
