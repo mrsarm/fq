@@ -38,7 +38,7 @@
 					"  -c NUM	Max number of bytes to count\n" \
 					"  -h		display this help and exit\n" \
 					"\n" \
-					"\"Frequency Counter\" project v1.0.2: fq <https://github.com/mrsarm/fq>\n"
+					"\"Frequency Counter\" project v1.0.3: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command arguments */

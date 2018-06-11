@@ -34,6 +34,51 @@ the frequency table of the given input.
     Symb.: 'w' 77   Freq.: 1        Pos.:  8
     Size: 12 - Number of symbols: 9
 
+The frequencies are sorted from the highest to
+the lowest, and in case two bytes have the same
+frequency they are sorted "alphabetically".
+
+Executing it with the `-v` (verbose) argument,
+it iterate the file byte by byte and show the
+frequencies each time:
+
+	$ echo "banana" | fq -v
+	Symb.: 'a' 61   Freq.: 1        Pos.:  0
+	Symb.: 'b' 62   Freq.: 1        Pos.:  1
+	Size: 2 - Number of symbols: 2
+	Symb.: 'a' 61
+	
+	Symb.: 'a' 61   Freq.: 1        Pos.:  0
+	Symb.: 'b' 62   Freq.: 1        Pos.:  1
+	Symb.: 'n' 6E   Freq.: 1        Pos.:  2
+	Size: 3 - Number of symbols: 3
+	Symb.: 'n' 6E
+	
+	Symb.: 'a' 61   Freq.: 2        Pos.:  0
+	Symb.: 'b' 62   Freq.: 1        Pos.:  1
+	Symb.: 'n' 6E   Freq.: 1        Pos.:  2
+	Size: 4 - Number of symbols: 3
+	Symb.: 'a' 61
+	
+	Symb.: 'a' 61   Freq.: 2        Pos.:  0
+	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
+	Symb.: 'b' 62   Freq.: 1        Pos.:  2
+	Size: 5 - Number of symbols: 3
+	Symb.: 'n' 6E
+	
+	Symb.: 'a' 61   Freq.: 3        Pos.:  0
+	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
+	Symb.: 'b' 62   Freq.: 1        Pos.:  2
+	Size: 6 - Number of symbols: 3
+	Symb.: 'a' 61
+	
+	Symb.: 'a' 61   Freq.: 3        Pos.:  0
+	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
+	Symb.: '.'  A   Freq.: 1        Pos.:  2
+	Symb.: 'b' 62   Freq.: 1        Pos.:  3
+	Size: 7 - Number of symbols: 4
+	Symb.: '.'  A
+
 
 Build and execute
 -----------------

@@ -366,7 +366,7 @@ int freqlist_sort(freqlist *l) {
 		// Gnome sort implementation
 		node_freqlist * pnode = l->list;
 		while (pnode) {
-			if (pnode == l->list || pnode->freq <= pnode->prev->freq) {
+			if (pnode == l->list || node_cmp(pnode, pnode->prev) < 0) {
 				pnode = pnode->next;
 			} else {
 				//node_freqlist * pnode_prev = pnode->prev;
