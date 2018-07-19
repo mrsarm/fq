@@ -20,6 +20,9 @@ set(TEST_SOURCE_FILES
 
 add_executable(test_fq ${TEST_SOURCE_FILES} ${BASE_SOURCE_FILES})
 
+install(TARGETS fq
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
+
 add_custom_target(clean-all
   make clean && rm -fR ${CMAKE_BINARY_DIR}/CMakeCache.txt
                        ${CMAKE_BINARY_DIR}/cmake_install.cmake
