@@ -30,7 +30,7 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length) {
 
 	fq_data* data = fq_data_init();
 	if (!data) {
-		fprintf(stderr, "Error: Insufficient memory error.\n");
+		fprintf(stderr, "Error: Insufficient memory.\n");
 		exit(ERROR_MEM);
 	}
 	data->verbose = OUTPUT_VERBOSE;

@@ -35,7 +35,6 @@ typedef struct _fq_data {
 	unsigned long length_in;	/* File size in bytes, */
 	unsigned long max;			/* Max characters to be read */
 	freqlist *freql;			/* Frequency list of characters. */
-	node_freqlist *pnode;		/* Temporary pointer to list node. */
 	int verbose;				/* If TRUE the verbose mode is active. */
 } fq_data;
 

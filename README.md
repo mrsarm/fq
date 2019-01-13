@@ -103,7 +103,7 @@ The project uses *CMakes* to build the executable.
 
    To install into another folder, execute the step 1
    overwriting the `CMAKE_INSTALL_PREFIX` variable, eg.
-   to install into `/usr/bin` folder:
+   to install into the `/usr/bin` folder:
 
        $ cmake -DCMAKE_INSTALL_PREFIX=/usr .
 

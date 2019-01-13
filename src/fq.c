@@ -38,7 +38,6 @@ fq_data *fq_data_init(void) {
 		data->filename_in = NULL;
 		data->fi = NULL;
 		data->freql = NULL;
-		data->pnode = NULL;
 	}
 	return data;
 }
@@ -122,6 +121,7 @@ int fq_count(fq_data *data) {
 		}
 	}
 	int _max_reached = FALSE;
+	node_freqlist *pnode = NULL;
 	do {
 		unsigned char symbol = fgetc(data->fi);	// Buffer is not used due
 		if( feof(data->fi) ) {					// that any modern OS
@@ -131,8 +131,8 @@ int fq_count(fq_data *data) {
 			_max_reached = TRUE;
 			break;
 		}
-		data->pnode=freqlist_add(data->freql, symbol);
-		if (!data->pnode) {
+		pnode = freqlist_add(data->freql, symbol);
+		if (!pnode) {
 			return ERROR_MEM;
 		}
 		if(data->verbose) {
