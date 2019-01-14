@@ -1,6 +1,6 @@
 /* fq.c
 
-   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -34,7 +34,6 @@ fq_data *fq_data_init(void) {
 	fq_data* data = (fq_data*) malloc(sizeof(fq_data));
 	if (data) {
 		data->verbose = FALSE;
-		data->max = 0l;
 		data->filename_in = NULL;
 		data->fi = NULL;
 		data->freql = NULL;
@@ -48,7 +47,7 @@ fq_data *fq_data_init(void) {
  * from the given file name.
  * Opens data->filename_in in "rb" mode, if it's
  * NULL, use stdin as data->fi file.
- * Returns `0` if no errors, or an error code.
+ * Returns `0` if no errors, otherwise an error code.
  */
 int fq_data_init_resources(fq_data *data, char *filename_in)
 {
@@ -120,17 +119,12 @@ int fq_count(fq_data *data) {
 			error_mem(fq_data_free_resources, data);
 		}
 	}
-	int _max_reached = FALSE;
 	node_freqlist *pnode = NULL;
 	do {
-		unsigned char symbol = fgetc(data->fi);	// Buffer is not used due
+		unsigned char symbol = fgetc(data->fi);	// A buffer is not used due
 		if( feof(data->fi) ) {					// that any modern OS
 			break ;								// use one when we use
 		}										// the libc library for I/O
-		if (data->max>0l && data->length_in >= data->max) {
-			_max_reached = TRUE;
-			break;
-		}
 		pnode = freqlist_add(data->freql, symbol);
 		if (!pnode) {
 			return ERROR_MEM;
@@ -142,7 +136,7 @@ int fq_count(fq_data *data) {
 				   symbol);
 		}
 		data->length_in++;
-	} while (!_max_reached);
+	} while (TRUE);
 	if (!data->freql->autosort) {
 		freqlist_sort(data->freql);
 	}
@@ -159,6 +153,6 @@ void error_mem(void(free_resources)(fq_data*), fq_data* data)
 	if (free_resources) {
 		free_resources(data);
 	}
-	fprintf(stderr, "Error: Insufficient memory error.\n");
+	fprintf(stderr, "Error: Insufficient memory.\n");
 	exit(ERROR_MEM);
 }

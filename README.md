@@ -4,7 +4,7 @@
 This project is a command line tool named "fq": outputs
 the frequency table of the given input.
 
-    $ fq README.md -c 20
+    $ fq README.md	# Counted only the first 20 chars as example
     > Final frequency table
     Symb.: 'e' 65   Freq.: 3        Pos.:  0
     Symb.: ' ' 20   Freq.: 2        Pos.:  1
@@ -39,7 +39,7 @@ the lowest, and in case two bytes have the same
 frequency they are sorted "alphabetically".
 
 Executing it with the `-v` (verbose) argument,
-it iterate the file byte by byte and show the
+it iterates the file byte by byte and shows the
 frequencies each time:
 
 	$ echo "banana" | fq -v
@@ -111,7 +111,7 @@ To clean the compiled binaries and compiled modules:
 
     $ make clean
 
-To clean all compiled files and generated "Makefiles":
+To clean all the compiled binaries and the "Makefiles" files:
 
     $ make clean-all
 
@@ -131,6 +131,6 @@ About
 
 Source: https://github.com/mrsarm/fq
 
-Authors: (2015-2018) Mariano Ruiz <mrsarm@gmail.cm>
+Authors: (2015-2019) Mariano Ruiz <mrsarm@gmail.cm>
 
 License: LGPL-3

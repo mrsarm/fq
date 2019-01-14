@@ -1,6 +1,6 @@
 /* fq.h
 
-   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -33,9 +33,8 @@ typedef struct _fq_data {
 	char *filename_in;			/* Input file name. */
 	FILE *fi;					/* Input file manager. */
 	unsigned long length_in;	/* File size in bytes, */
-	unsigned long max;			/* Max characters to be read */
 	freqlist *freql;			/* Frequency list of characters. */
-	int verbose;				/* If TRUE the verbose mode is active. */
+	int verbose;				/* If TRUE the verbose mode is activated. */
 } fq_data;
 
 

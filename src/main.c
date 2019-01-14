@@ -1,6 +1,6 @@
 /* main.c
 
-   Copyright (C) 2015-2018 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <getopt.h>
 #include <ctype.h>
 #include <signal.h>
@@ -29,16 +28,17 @@
 #include "fq.h"
 
 
-#define USAGE       "Usage: %s [-hv] [FILE] [-c NUM]\n" \
+#define USAGE       "Usage: %s [-hv] [FILE]\n" \
 					"Print the frequency table to standard output.\n" \
 					"\n" \
 					"Options:\n" \
 	 				"  -v		verbose mode, print frequency table\n" \
 	  				"    		for each byte in the stream\n" \
-					"  -c NUM	Max number of bytes to count\n" \
 					"  -h		display this help and exit\n" \
 					"\n" \
-					"\"Frequency Counter\" project v1.0.3: fq <https://github.com/mrsarm/fq>\n"
+					"With no FILE, read standard input." \
+					"\n" \
+					"\"Frequency Counter\" project v1.1.0: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command arguments */
@@ -86,21 +86,19 @@ fq_data* init_options(int argc, char *argv[])
 	if (!data) error_mem(NULL, NULL);
     opterr = 0;
 	int c;
-	while ((c = getopt(argc, argv, "hvc:")) != -1) {
+	while ((c = getopt(argc, argv, "hv")) != -1) {
         switch (c) {
             case 'v':
                 data->verbose = TRUE;
-                break;
-            case 'c':
-                data->max = (unsigned long) atol(optarg);
                 break;
             case 'h':
 				printf(USAGE, argv[0]);
 				exit(0);
             case '?':
-                if (optopt == 'c') {
-                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                } else if (isprint (optopt)) {
+//                if (optopt == 'c') {
+//                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+//                } else
+               	if (isprint (optopt)) {
                     fprintf(stderr, "Unknown option `-%c'.\n", optopt);
 					fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
                 } else {
