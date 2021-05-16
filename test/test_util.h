@@ -23,6 +23,7 @@
 
 #include <fq.h>
 
+#define ARRAY_SIZE(arr)             sizeof(arr) / sizeof((arr)[0])
 
 #define OUTPUT_VERBOSE				FALSE
 
@@ -39,26 +40,12 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length);
 void free_resources(fq_data *data);
 
 
-/**
- * Check if both buffers are equals.
- */
-int buff_check(const unsigned char *buff1, const unsigned char *buff2,
-			   unsigned int length);
-
-
 /*
  * Checks if ``list`` is equals to ``expected_freqlist`` (second list is in
  * array format).
  */
 int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[][2],
 				   unsigned int expected_length);
-
-/*
- * Checks if ``list`` is equals to ``expected_freqlist`` (second list is in
- * array format), included H values.
- */
-int freqlist_check_with_h(const freqlist* plist, const unsigned int expected_freqlist[][3],
-						  unsigned int expected_length);
 
 
 #endif  /* _FQ_TEST_UTIL_H */

@@ -20,7 +20,6 @@
 
 #include "cheat.h"
 #include "fq.h"
-#include "freqlist.h"
 #include "test_util.h"
 
 
@@ -38,43 +37,37 @@ CHEAT_TEAR_DOWN(
 /***************
  *  DATA SET 1
  ***************/
-#define BUFF_LEN_1			10
-#define EXPECTED_FQ_LEN_1	 5
 CHEAT_DECLARE(
-	unsigned char buff_1[BUFF_LEN_1] =					{ 4, 2, 3, 3, 6, 3, 4, 2, 6, 8 };
-	unsigned int expected_fq_1[EXPECTED_FQ_LEN_1][2] =	{{3,3}, {2,2}, {4,2}, {6,2}, {8,1}};
+	unsigned char buff_1[] =		    { 4, 2, 3, 3, 6, 3, 4, 2, 6, 8 };
+	unsigned int expected_fq_1[][2] =	{{3,3}, {2,2}, {4,2}, {6,2}, {8,1}};
 )
 CHEAT_TEST(expected_buff_out_ok,
-	data=count_buff(buff_1, BUFF_LEN_1);
-	cheat_assert(  freqlist_check(data->freql, expected_fq_1, EXPECTED_FQ_LEN_1)  );
+	data=count_buff(buff_1, ARRAY_SIZE(buff_1));
+	cheat_assert(  freqlist_check(data->freql, expected_fq_1, ARRAY_SIZE(expected_fq_1))  );
 )
 
 
 /***************
  *  DATA SET 2
  ***************/
-#define BUFF_LEN_2			12
-#define EXPECTED_FQ_LEN_2	 8
 CHEAT_DECLARE(
-	unsigned char buff_2[BUFF_LEN_2] =					{ 0, 5, 3, 2, 2, 8, 5, 0, 6, 18, 10, 0 };
-	unsigned int expected_fq_2[EXPECTED_FQ_LEN_2][2] =	{{0,3}, {2,2}, {5,2}, {3,1}, {6,1}, {8,1}, {10,1}, {18,1}};
+	unsigned char buff_2[] =			{ 0, 5, 3, 2, 2, 8, 5, 0, 6, 18, 10, 0 };
+	unsigned int expected_fq_2[][2] =	{{0,3}, {2,2}, {5,2}, {3,1}, {6,1}, {8,1}, {10,1}, {18,1}};
 )
 CHEAT_TEST(expected_buff_out_2_ok,
-   data=count_buff(buff_2, BUFF_LEN_2);
-   cheat_assert(  freqlist_check(data->freql, expected_fq_2, EXPECTED_FQ_LEN_2)  );
+   data=count_buff(buff_2, ARRAY_SIZE(buff_2));
+   cheat_assert(  freqlist_check(data->freql, expected_fq_2, ARRAY_SIZE(expected_fq_2))  );
 )
 
 
 /****************************
  *  DATA SET 3: word "banana"
  ****************************/
-#define BUFF_LEN_3			 6
-#define EXPECTED_FQ_LEN_3	 3
 CHEAT_DECLARE(
-	unsigned char buff_3[BUFF_LEN_3] =					{ 'b', 'a', 'n', 'a', 'n', 'a' };
-	unsigned int expected_fq_3[EXPECTED_FQ_LEN_3][2] =	{{'a',3}, {'n',2}, {'b',1}};
+	unsigned char buff_3[] =			{ 'b', 'a', 'n', 'a', 'n', 'a' };
+	unsigned int expected_fq_3[][2] =	{{'a',3}, {'n',2}, {'b',1}};
 )
 CHEAT_TEST(expected_buff_out_3_ok,
-   data=count_buff(buff_3, BUFF_LEN_3);
-   cheat_assert(  freqlist_check(data->freql, expected_fq_3, EXPECTED_FQ_LEN_3)  );
+   data=count_buff(buff_3, ARRAY_SIZE(buff_3));
+   cheat_assert(  freqlist_check(data->freql, expected_fq_3, ARRAY_SIZE(expected_fq_3))  );
 )
