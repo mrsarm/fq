@@ -1,6 +1,6 @@
 /* freqlist.h
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ typedef struct _node_freqlist
 
 /*
  * Struct with the node list of frequencies,
- * and a array with the frequency of each symbol.
+ * and an array with the frequency of each symbol.
  */
 typedef struct _freqlist
 {
@@ -62,7 +62,7 @@ typedef struct _freqlist
 											   (with the highest frequency). */
 	int autosort;							/* TRUE if the list must be sorted
 											   each time a symbol is added */
-	unsigned char freqs[256];				/* Frequency array of each symbol. */
+	unsigned char freqs[256];				/* Frequencies of each symbol. */
 	unsigned int length;					/* Numbers of different symbols
 											   in the list. */
 	unsigned long size;						/* Numbers of symbols in the list. */
@@ -88,42 +88,34 @@ node_freqlist *freqlist_find(const freqlist* l, unsigned char c);
 
 /*
  * Increases the frequency of the symbol 'c' in +1,
- * and rearrange if necessary. If the symbol is not present
- * in the list, add them, an set the frequency of the node in 1.
+ * and rearranges if necessary. If the symbol is not present
+ * in the list, it adds them, an sets the frequency of the node in 1.
  * Returns the node with the symbol.
  */
 node_freqlist *freqlist_add(freqlist *l, unsigned char c);
 
 /*
- * Decreases the frequency of the symbol 'c', and rearrange if
- * necessary. The symbol is removed if has frequency=1
- * in the list.
- * Returns the node with the symbol, or NULL if the
- * symbol was removed.
- */
-node_freqlist *freqlist_sub(freqlist *l, unsigned char c);
-
-/*
- * Print the list of frequencies.
- * @msg: print this message before the list (optional).
- * @freql: the frequency list.
+ * Prints the list of frequencies.
  * @f: the output stream, eg. the stdout.
- * @verbose: TRUE to print the freql.
+ * @msg: prints this message before the list (optional).
+ * @freql: the frequency list.
+ * @pnode: if not null the symbol is highlighted in
+ *         the list (optional).
  */
-void freqlist_fprintf(const char *msg, const freqlist *freql, FILE *f);
+void freqlist_fprintf(FILE *f, const char *msg,
+                      const freqlist *freql, node_freqlist *pnode);
 
 
 /*
- * Sorts the frequencies in case
- * aren't sort.
- * Returns the number swaps made.
+ * Sorts the frequencies in case aren't sort.
+ * Returns the number of swaps made.
  */
 int freqlist_sort(freqlist *l);
 
 
 /*
  * Compares by frequency of the node,
- * and symbol if previous comparison are equals.
+ * or symbol if the frequencies are equals.
  */
 int node_cmp(const node_freqlist *pnode1, const node_freqlist *pnode2);
 

@@ -1,6 +1,6 @@
 /* fq.c
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ fq_data *fq_data_init(void) {
  * Initialization of input/output data structures
  * from the given file name.
  * Opens data->filename_in in "rb" mode, if it's
- * NULL, use stdin as data->fi file.
+ * NULL, it uses stdin as data->fi file.
  * Returns `0` if no errors, otherwise an error code.
  */
 int fq_data_init_resources(fq_data *data, char *filename_in)
@@ -110,7 +110,7 @@ void fq_data_free_resources(fq_data *data)
 }
 
 
-/**
+/*
  * Counts the frequencies.
  */
 int fq_count(fq_data *data) {
@@ -130,7 +130,7 @@ int fq_count(fq_data *data) {
 			return ERROR_MEM;
 		}
 		if(data->verbose) {
-			freqlist_fprintf(NULL, data->freql, stdout);
+			freqlist_fprintf(stdout, NULL, data->freql, pnode);
 			printf("Symb.: '%c' %2X\n\n",
 				   (symbol<0x7F && symbol>=0x20)?symbol:'.',
 				   symbol);

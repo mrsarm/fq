@@ -1,6 +1,6 @@
 /* fq.h
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -30,11 +30,11 @@
  * the encoding process: input file, frequency list, etc.
  */
 typedef struct _fq_data {
-	char *filename_in;			/* Input file name. */
-	FILE *fi;					/* Input file manager. */
-	unsigned long length_in;	/* File size in bytes, */
-	freqlist *freql;			/* Frequency list of characters. */
-	int verbose;				/* If TRUE the verbose mode is activated. */
+	char *filename_in;			/* Input file name */
+	FILE *fi;					/* Input file manager */
+	unsigned long length_in;	/* File size in bytes */
+	freqlist *freql;			/* Frequency list of characters */
+	int verbose;				/* If TRUE the verbose mode is activated */
 } fq_data;
 
 
@@ -50,7 +50,7 @@ fq_data* fq_data_init(void);
 /*
  * Initialization of input data structures.
  * Opens data->filename_in in "rb" mode, if it's
- * NULL, use stdin as data->fi file.
+ * NULL, it uses stdin as data->fi file.
  * Returns `0` if no errors, or an error code.
  */
 int fq_data_init_resources(fq_data *data, char *filename_in);
@@ -79,7 +79,7 @@ int fq_data_init_freql(fq_data *data);
 void fq_data_free_resources(fq_data *data);
 
 
-/**
+/*
  * Counts the frequencies.
  */
 int fq_count(fq_data *data);

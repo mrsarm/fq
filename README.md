@@ -25,7 +25,7 @@ the frequency table of the given input.
     > Final frequency table
     Symb.: 'l' 6C   Freq.: 3        Pos.:  0
     Symb.: 'o' 6F   Freq.: 2        Pos.:  1
-    Symb.: '.'  A   Freq.: 1        Pos.:  2
+    Symb.: '.' 0A   Freq.: 1        Pos.:  2
     Symb.: ' ' 20   Freq.: 1        Pos.:  3
     Symb.: 'H' 48   Freq.: 1        Pos.:  4
     Symb.: 'd' 64   Freq.: 1        Pos.:  5
@@ -43,30 +43,30 @@ it iterates the file byte by byte and shows the
 frequencies each time:
 
 	$ echo "banana" | fq -v
-	Symb.: 'a' 61   Freq.: 1        Pos.:  0
+	Symb.: 'a' 61   Freq.: 1        Pos.:  0 *
 	Symb.: 'b' 62   Freq.: 1        Pos.:  1
 	Size: 2 - Number of symbols: 2
 	Symb.: 'a' 61
 	
 	Symb.: 'a' 61   Freq.: 1        Pos.:  0
 	Symb.: 'b' 62   Freq.: 1        Pos.:  1
-	Symb.: 'n' 6E   Freq.: 1        Pos.:  2
+	Symb.: 'n' 6E   Freq.: 1        Pos.:  2 *
 	Size: 3 - Number of symbols: 3
 	Symb.: 'n' 6E
 	
-	Symb.: 'a' 61   Freq.: 2        Pos.:  0
+	Symb.: 'a' 61   Freq.: 2        Pos.:  0 *
 	Symb.: 'b' 62   Freq.: 1        Pos.:  1
 	Symb.: 'n' 6E   Freq.: 1        Pos.:  2
 	Size: 4 - Number of symbols: 3
 	Symb.: 'a' 61
 	
 	Symb.: 'a' 61   Freq.: 2        Pos.:  0
-	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
+	Symb.: 'n' 6E   Freq.: 2        Pos.:  1 *
 	Symb.: 'b' 62   Freq.: 1        Pos.:  2
 	Size: 5 - Number of symbols: 3
 	Symb.: 'n' 6E
 	
-	Symb.: 'a' 61   Freq.: 3        Pos.:  0
+	Symb.: 'a' 61   Freq.: 3        Pos.:  0 *
 	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
 	Symb.: 'b' 62   Freq.: 1        Pos.:  2
 	Size: 6 - Number of symbols: 3
@@ -74,7 +74,7 @@ frequencies each time:
 	
 	Symb.: 'a' 61   Freq.: 3        Pos.:  0
 	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
-	Symb.: '.'  A   Freq.: 1        Pos.:  2
+	Symb.: '.' 0A   Freq.: 1        Pos.:  2 *
 	Symb.: 'b' 62   Freq.: 1        Pos.:  3
 	Size: 7 - Number of symbols: 4
 	Symb.: '.'  A
@@ -131,6 +131,6 @@ About
 
 Source: https://github.com/mrsarm/fq
 
-Authors: (2015-2019) Mariano Ruiz <mrsarm@gmail.cm>
+Authors: (2015-2021) Mariano Ruiz <mrsarm@gmail.cm>
 
 License: LGPL-3

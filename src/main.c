@@ -1,6 +1,6 @@
 /* main.c
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -36,9 +36,8 @@
 	  				"    		for each byte in the stream\n" \
 					"  -h		display this help and exit\n" \
 					"\n" \
-					"With no FILE, read standard input." \
-					"\n" \
-					"\"Frequency Counter\" project v1.1.0: fq <https://github.com/mrsarm/fq>\n"
+					"With no FILE, read standard input.\n" \
+					"\"Frequency Counter\" project v1.2.0: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command arguments */
@@ -51,7 +50,7 @@ fq_data* data;
 
 int main(int argc, char *argv[])
 {
-	data = init_options(argc, argv);			// Initialize data with command arguments
+	data = init_options(argc, argv);			// Initialize data with command the arguments
 	signal(SIGINT, ctrlc_handler);				// Initialize Ctrl+C signal
 
 	int r = fq_data_init_resources(data, NULL);	// Initialize resources (files)
@@ -64,22 +63,22 @@ int main(int argc, char *argv[])
 		case ERROR_MEM:
 			error_mem(fq_data_free_resources, data);
 	}
-	r = fq_count(data);							// Count the symbols
+	r = fq_count(data);									// Count the symbols
 	switch (r) {
 		case ERROR_MEM:
 			error_mem(fq_data_free_resources, data);
 	}
 
-	freqlist_fprintf("> Final frequency table\n",	// Print the frequencies
-					 data->freql, stdout);
+	freqlist_fprintf(									// Print the frequencies
+	        stdout, "> Final frequency table\n", data->freql, NULL);
 
-	fq_data_free_resources(data);				// Close file and free memory
+	fq_data_free_resources(data);						// Close file and free memory
 
 	return 0;
 }
 
 
-/* Initialize the global variables with command options */
+/* Initialize the global variables with the command options */
 fq_data* init_options(int argc, char *argv[])
 {
 	fq_data* data = fq_data_init();
@@ -88,12 +87,12 @@ fq_data* init_options(int argc, char *argv[])
 	int c;
 	while ((c = getopt(argc, argv, "hv")) != -1) {
         switch (c) {
+            case 'h':
+                printf(USAGE, argv[0]);
+                exit(0);
             case 'v':
                 data->verbose = TRUE;
                 break;
-            case 'h':
-				printf(USAGE, argv[0]);
-				exit(0);
             case '?':
 //                if (optopt == 'c') {
 //                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -122,8 +121,8 @@ void ctrlc_handler(int sig) {
 	printf("\n");
 
 	if (data && data->freql) {
-		freqlist_fprintf("> Final frequency table\n",    // Print the frequencies
-						 data->freql, stdout);
+		freqlist_fprintf(stdout, "> Final frequency table\n",   // Print the frequencies
+						 data->freql, NULL);
 	}
 	exit(0);
 }
