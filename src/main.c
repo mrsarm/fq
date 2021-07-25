@@ -119,7 +119,9 @@ fq_data* init_options(int argc, char *argv[])
 /* Ctrl+C handler */
 void ctrlc_handler(int sig) {
 	printf("\n");
-
+	if (!data->freql->autosort) {
+		freqlist_sort(data->freql);
+	}
 	if (data && data->freql) {
 		freqlist_fprintf(stdout, "> Final frequency table\n",   // Print the frequencies
 						 data->freql, NULL);
