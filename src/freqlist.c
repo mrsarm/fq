@@ -26,23 +26,26 @@
 /*
  * Prints the list of frequencies.
  * @f: the output stream, eg. the stdout.
- * @msg: prints this message before the list (optional).
+ * @title: prints this message before the list (optional).
  * @freql: the frequency list.
  * @pnode: if not null the symbol is highlighted in
  *         the list (optional).
  */
-void freqlist_fprintf(FILE *f, const char *msg,
+void freqlist_fprintf(FILE *f, const char *title,
                       const freqlist *freql, node_freqlist *pnode)
 {
-	if (msg)
-		fprintf(f, msg);
+	if (title)
+		fprintf(f, title);
+    fprintf(f, "Symbol    Frequency   Pos\n");
+    fprintf(f, "-------------------------\n");
 	for (node_freqlist *pnode_i=freql->list; pnode_i; pnode_i=pnode_i->next)
-		fprintf(f, "Symb.: '%c' %02X   Freq.: %lu\tPos.: %2X%s\n",
+		fprintf(f, "'%c' %02X    %9lu    %2X%s\n",
                 (pnode_i->symb < 0x7F && pnode_i->symb >= 0x20) ? pnode_i->symb : '.',
                 pnode_i->symb,
                 pnode_i->freq,
                 pnode_i->pos,
                 pnode && pnode == pnode_i ? " *" : "");
+    fprintf(f, "-------------------------\n");
 	fprintf(f, "Size: %lu - Number of symbols: %d\n",
 			freql->size, freql->length);
 }

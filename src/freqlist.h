@@ -97,12 +97,12 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c);
 /*
  * Prints the list of frequencies.
  * @f: the output stream, eg. the stdout.
- * @msg: prints this message before the list (optional).
+ * @title: prints this message before the list (optional).
  * @freql: the frequency list.
  * @pnode: if not null the symbol is highlighted in
  *         the list (optional).
  */
-void freqlist_fprintf(FILE *f, const char *msg,
+void freqlist_fprintf(FILE *f, const char *title,
                       const freqlist *freql, node_freqlist *pnode);
 
 

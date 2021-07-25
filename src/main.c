@@ -28,16 +28,16 @@
 #include "fq.h"
 
 
-#define USAGE       "Usage: %s [-hv] [FILE]\n" \
-					"Print the frequency table to standard output.\n" \
-					"\n" \
-					"Options:\n" \
-	 				"  -v		verbose mode, print frequency table\n" \
-	  				"    		for each byte in the stream\n" \
-					"  -h		display this help and exit\n" \
-					"\n" \
-					"With no FILE, read standard input.\n" \
-					"\"Frequency Counter\" project v1.2.0: fq <https://github.com/mrsarm/fq>\n"
+#define USAGE   "Usage: %s [-hv] [FILE]\n" \
+                "Print the frequency table to standard output.\n" \
+                "\n" \
+                "Options:\n" \
+                "  -v		verbose mode, print frequency table\n" \
+                "    		for each byte in the stream\n" \
+                "  -h		display this help and exit\n" \
+                "\n" \
+                "With no FILE, read standard input.\n" \
+                "\"Frequency Counter\" project v1.2.0: fq <https://github.com/mrsarm/fq>\n"
 
 
 /* Initialize the global variables with the command arguments */

@@ -131,9 +131,7 @@ int fq_count(fq_data *data) {
 		}
 		if(data->verbose) {
 			freqlist_fprintf(stdout, NULL, data->freql, pnode);
-			printf("Symb.: '%c' %2X\n\n",
-				   (symbol<0x7F && symbol>=0x20)?symbol:'.',
-				   symbol);
+			printf("\n\n");
 		}
 		data->length_in++;
 	} while (TRUE);
