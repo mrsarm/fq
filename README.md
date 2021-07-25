@@ -151,7 +151,7 @@ To clean all the compiled binaries and the "Makefiles" files:
 
 ### Tests
 
-Tests are built with CHEAT <http://users.jyu.fi/~sapekiis/cheat/index.html>,
+Tests are built with CHEAT <https://github.com/Tuplanolla/cheat>,
 a unit testing framework for C/C++ programming language.
 
 To run the tests, first build the project and then execute:
