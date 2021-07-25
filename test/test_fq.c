@@ -1,6 +1,6 @@
 /* test_fq.c
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 
 
 #include "cheat.h"
+#include "const.h"
 #include "fq.h"
 #include "test_util.h"
 
@@ -42,7 +43,11 @@ CHEAT_DECLARE(
 	unsigned int expected_fq_1[][2] =	{{3,3}, {2,2}, {4,2}, {6,2}, {8,1}};
 )
 CHEAT_TEST(expected_buff_out_ok,
-	data=count_buff(buff_1, ARRAY_SIZE(buff_1));
+	data=count_buff(buff_1, ARRAY_SIZE(buff_1), FALSE);
+	cheat_assert(  freqlist_check(data->freql, expected_fq_1, ARRAY_SIZE(expected_fq_1))  );
+)
+CHEAT_TEST(expected_buff_out_ok_autosort,   // with autosort and verbose
+	data=count_buff(buff_1, ARRAY_SIZE(buff_1), TRUE);
 	cheat_assert(  freqlist_check(data->freql, expected_fq_1, ARRAY_SIZE(expected_fq_1))  );
 )
 
@@ -55,7 +60,11 @@ CHEAT_DECLARE(
 	unsigned int expected_fq_2[][2] =	{{0,3}, {2,2}, {5,2}, {3,1}, {6,1}, {8,1}, {10,1}, {18,1}};
 )
 CHEAT_TEST(expected_buff_out_2_ok,
-   data=count_buff(buff_2, ARRAY_SIZE(buff_2));
+   data=count_buff(buff_2, ARRAY_SIZE(buff_2), FALSE);
+   cheat_assert(  freqlist_check(data->freql, expected_fq_2, ARRAY_SIZE(expected_fq_2))  );
+)
+CHEAT_TEST(expected_buff_out_2_ok_autosort,
+   data=count_buff(buff_2, ARRAY_SIZE(buff_2), TRUE);
    cheat_assert(  freqlist_check(data->freql, expected_fq_2, ARRAY_SIZE(expected_fq_2))  );
 )
 
@@ -68,6 +77,10 @@ CHEAT_DECLARE(
 	unsigned int expected_fq_3[][2] =	{{'a',3}, {'n',2}, {'b',1}};
 )
 CHEAT_TEST(expected_buff_out_3_ok,
-   data=count_buff(buff_3, ARRAY_SIZE(buff_3));
+   data=count_buff(buff_3, ARRAY_SIZE(buff_3), FALSE);
+   cheat_assert(  freqlist_check(data->freql, expected_fq_3, ARRAY_SIZE(expected_fq_3))  );
+)
+CHEAT_TEST(expected_buff_out_3_ok_autosort,
+   data=count_buff(buff_3, ARRAY_SIZE(buff_3), TRUE);
    cheat_assert(  freqlist_check(data->freql, expected_fq_3, ARRAY_SIZE(expected_fq_3))  );
 )

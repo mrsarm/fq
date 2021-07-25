@@ -1,6 +1,6 @@
 /* test_util.c
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -26,14 +26,14 @@
 /**
  * Counts the buffer passed and returns the ``fq_data`` with the output data.
  */
-fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length) {
+fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length, int verbose) {
 
 	fq_data* data = fq_data_init();
 	if (!data) {
 		fprintf(stderr, "Error: Insufficient memory.\n");
 		exit(ERROR_MEM);
 	}
-	data->verbose = OUTPUT_VERBOSE;
+	data->verbose = verbose;
 	// Initialize with a memory stream
 	fq_data_init_resources_fi(data, fmemopen(buff_in, buff_in_length, "rb"));
 
@@ -44,7 +44,7 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length) {
 	}
 
 	freqlist_fprintf(stdout, "> Final frequency table\n", data->freql, NULL);
-	if (data->verbose) printf("\n-------------------------------------\n\n");
+	if (data->verbose) printf("\n=====================================\n\n");
 	return data;
 }
 
@@ -70,7 +70,7 @@ int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[]
 		fprintf(stderr, "Different lengths. plist: %d - expected: %d\n", plist->length, expected_length);
 		return FALSE;
 	}
-	node_freqlist*pnode = plist->list;
+	node_freqlist *pnode = plist->list;
 	int i = 0;
 	while (pnode) {
 		if (pnode->symb != expected_freqlist[i][0]
