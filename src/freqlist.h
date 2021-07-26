@@ -40,7 +40,9 @@
 typedef struct _node_freqlist
 {
    unsigned char symb;				/* Referenced symbol. */
-   unsigned char pos;				/* Position in the list */
+   unsigned char pos;				/* Position in the list starting in 0
+                                       the first element in the list
+                                       (higher frequency) */
    unsigned long freq;				/* Occurrences of the character
 									   in the stream (frequency). */
    struct _node_freqlist *prev;		/* Pointer to the previous node in

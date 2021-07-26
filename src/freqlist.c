@@ -121,12 +121,12 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c)
 	node_freqlist *pnode1, *pnode_prev;
 
 	/* This function promotes the position of the symbol in the list
-       after increase its frequency, or being created. */
+	   after increase its frequency, or being created. */
 	void _freqlist_promote(freqlist *l, node_freqlist *pnode);
 
 	pnode1=l->list;
 	while (pnode1 && c!=pnode1->symb) {
-        pnode_prev=pnode1;
+		pnode_prev=pnode1;
 		pnode1=pnode1->next;
 	}
 
@@ -184,7 +184,7 @@ void _freqlist_promote(freqlist *l, node_freqlist *pnode)
 			(pnode->next)->prev=pnode->prev;
 		/* pnode points at its new prev and next */
 		pnode->prev=pnode_prev;
-        pnode_next=pnode->next;
+		pnode_next=pnode->next;
 		pnode->next=pnode_prev->next;
 		/* The pnode new and prev point to pnode */
 		pnode_prev->next=pnode;
@@ -195,7 +195,7 @@ void _freqlist_promote(freqlist *l, node_freqlist *pnode)
 		/* Increase in +1 the pos variable of all nodes after pnode */
 		pnode_prev=pnode;
 		while (pnode_prev->next && pnode_prev->next != pnode_next) {
-            pnode_prev=pnode_prev->next;
+			pnode_prev=pnode_prev->next;
 			pnode_prev->pos++;
 		}
 		return;
