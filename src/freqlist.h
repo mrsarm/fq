@@ -51,6 +51,10 @@ typedef struct _node_freqlist
    struct _node_freqlist *next;		/* Pointer to the next node in the list,
 									   with frequency less or equal
 									   than this. */
+   int debug_last_jump;             /* Number of symbols jumped in freqlist
+                                       last time symbol was found, e.g. if
+                                       symbol was in pos 4 and them went to
+                                       pos 1, the value will be 3 */
 } node_freqlist;
 
 

@@ -36,16 +36,28 @@ void freqlist_fprintf(FILE *f, const char *title,
 {
 	if (title)
 		fprintf(f, title);
-    fprintf(f, "Symbol    Frequency   Pos\n");
-    fprintf(f, "-------------------------\n");
+	char *mark = "";
+	char markup[16];
+	if (pnode) {
+		if (freql->freqs[pnode->symb]==1) {
+    		mark = " *";
+		} else if (pnode->debug_last_jump == 0) {
+			mark = " <";
+		} else {    // +1..
+			sprintf(markup, " ^ (%+d)", pnode->debug_last_jump);
+			mark = markup;
+		}
+	}
+	fprintf(f, "Symbol    Frequency   Pos\n");
+	fprintf(f, "-------------------------\n");
 	for (node_freqlist *pnode_i=freql->list; pnode_i; pnode_i=pnode_i->next)
 		fprintf(f, "'%c' %02X    %9lu    %2X%s\n",
-                (pnode_i->symb < 0x7F && pnode_i->symb >= 0x20) ? pnode_i->symb : '.',
-                pnode_i->symb,
-                pnode_i->freq,
-                pnode_i->pos,
-                pnode && pnode == pnode_i ? " *" : "");
-    fprintf(f, "-------------------------\n");
+				(pnode_i->symb < 0x7F && pnode_i->symb >= 0x20) ? pnode_i->symb : '.',
+				pnode_i->symb,
+				pnode_i->freq,
+				pnode_i->pos,
+                pnode && pnode == pnode_i ? mark : "");
+	fprintf(f, "-------------------------\n");
 	fprintf(f, "Size: %lu - Number of symbols: %d\n",
 			freql->size, freql->length);
 }
@@ -65,6 +77,7 @@ freqlist* freqlist_create(unsigned char c)
 			l->list->pos=(unsigned char)0;
 			l->list->freq=1;
 			l->list->next=l->list->prev=NULL;
+			l->list->debug_last_jump = 0;
 		}
 		for (int i=0; i<256; i++)
 			l->freqs[i]=0;
@@ -155,7 +168,8 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c)
 		pnode1->freq=1;
 		pnode1->prev=pnode_prev;
 		pnode1->next=NULL;
-        pnode_prev->next=pnode1;
+		pnode1->debug_last_jump=0;
+		pnode_prev->next=pnode1;
 		_freqlist_promote(l, pnode1);
 	}
 	return pnode1;
@@ -167,6 +181,7 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c)
 void _freqlist_promote(freqlist *l, node_freqlist *pnode)
 {
 	unsigned char i;
+	int steps = 0;	  /* num of elements walked until reached new pos */
 
 	node_freqlist *pnode_prev=pnode->prev,
 	              *pnode_next;
@@ -174,8 +189,10 @@ void _freqlist_promote(freqlist *l, node_freqlist *pnode)
 	/* While exist a prev node with less frequency than pnode
 	   or have the same frequency but a lower ASCII code ... */
 	while (pnode_prev && node_cmp(pnode, pnode_prev) > 0 ) {
-        pnode_prev=pnode_prev->prev;
+		pnode_prev=pnode_prev->prev;
+		steps++;
 	}
+	pnode->debug_last_jump = steps;
 
 	if (pnode_prev && pnode_prev != pnode->prev) {
 		/* Previous and next of pnode point together */

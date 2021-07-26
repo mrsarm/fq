@@ -47,7 +47,7 @@ Executing it with the `-v` (verbose) argument,
 it iterates the file byte by byte and shows the
 frequencies each time:
 
-	$ echo "banana" | fq -v
+	$ echo 'banana!!' | fq -v
 	Symbol    Frequency   Pos
 	-------------------------
 	'a' 61            1     0 *
@@ -67,7 +67,7 @@ frequencies each time:
 	
 	Symbol    Frequency   Pos
 	-------------------------
-	'a' 61            2     0 *
+	'a' 61            2     0 <
 	'b' 62            1     1
 	'n' 6E            1     2
 	-------------------------
@@ -77,7 +77,7 @@ frequencies each time:
 	Symbol    Frequency   Pos
 	-------------------------
 	'a' 61            2     0
-	'n' 6E            2     1 *
+	'n' 6E            2     1 ^ (+1)
 	'b' 62            1     2
 	-------------------------
 	Size: 5 - Number of symbols: 3
@@ -85,7 +85,7 @@ frequencies each time:
 	
 	Symbol    Frequency   Pos
 	-------------------------
-	'a' 61            3     0 *
+	'a' 61            3     0 <
 	'n' 6E            2     1
 	'b' 62            1     2
 	-------------------------
@@ -96,21 +96,43 @@ frequencies each time:
 	-------------------------
 	'a' 61            3     0
 	'n' 6E            2     1
-	'.' 0A            1     2 *
+	'!' 21            1     2 *
 	'b' 62            1     3
 	-------------------------
 	Size: 7 - Number of symbols: 4
+	
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0
+	'!' 21            2     1 ^ (+1)
+	'n' 6E            2     2
+	'b' 62            1     3
+	-------------------------
+	Size: 8 - Number of symbols: 4
+	
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0
+	'!' 21            2     1
+	'n' 6E            2     2
+	'.' 0A            1     3 *
+	'b' 62            1     4
+	-------------------------
+	Size: 9 - Number of symbols: 5
 	
 	
 	> Final frequency table
 	Symbol    Frequency   Pos
 	-------------------------
 	'a' 61            3     0
-	'n' 6E            2     1
-	'.' 0A            1     2
-	'b' 62            1     3
+	'!' 21            2     1
+	'n' 6E            2     2
+	'.' 0A            1     3
+	'b' 62            1     4
 	-------------------------
-	Size: 7 - Number of symbols: 4
+	Size: 9 - Number of symbols: 5
 
 
 Build and execute
