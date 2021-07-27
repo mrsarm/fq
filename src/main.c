@@ -36,7 +36,7 @@
                 "    		for each byte in the stream\n" \
                 "  -h		display this help and exit\n" \
                 "\n" \
-                "With no FILE, read standard input.\n" \
+                "With no FILE, or when FILE is -, read standard input.\n" \
                 "\"Frequency Counter\" project v2.0.0-rc1: fq <https://github.com/mrsarm/fq>\n"
 
 
@@ -109,8 +109,13 @@ fq_data* init_options(int argc, char *argv[])
         }
 	}
     for (int index = optind; index < argc; index++) {
-        data->filename_in = argv[index];
-        break;
+        if (!data->filename_in) {
+            data->filename_in = argv[index];
+        } else {
+            fprintf(stderr, "%s error: extra operand '%s'\n", argv[0], argv[index]);
+            fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
+            exit(ERROR_PARAM);
+        }
     }
 	return data;
 }

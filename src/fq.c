@@ -56,7 +56,7 @@ int fq_data_init_resources(fq_data *data, char *filename_in)
 		strcpy(data->filename_in, filename_in);
 	}
 	/* Open the file in binary mode / read only */
-	if (data->filename_in) {
+	if (data->filename_in && strcmp(data->filename_in, "-")) {
 		data->fi = fopen(data->filename_in, "rb");
 		if (!data->fi) {
 			return ERROR_FILE_NOT_FOUND;
