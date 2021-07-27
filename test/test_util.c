@@ -67,7 +67,7 @@ int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[]
 				   unsigned int expected_length) {
 
 	if (plist->length !=  expected_length) {
-		fprintf(stderr, "Different lengths. plist: %d - expected: %d\n", plist->length, expected_length);
+		fprintf(stderr, "Error: different lengths. plist %d - expected %d\n", plist->length, expected_length);
 		return FALSE;
 	}
 	node_freqlist *pnode = plist->list;
@@ -75,7 +75,7 @@ int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[]
 	while (pnode) {
 		if (pnode->symb != expected_freqlist[i][0]
 				|| pnode->freq != expected_freqlist[i][1]) {
-			fprintf(stderr, "Different values in plist. Pos.: %d - Symbols: %d, %d. "
+			fprintf(stderr, "Error: different values in plist. Pos. %d - Symbols %d, %d. "
 							"Frequencies: %lu, %u\n",
 					i, (int)pnode->symb, expected_freqlist[i][0], pnode->freq, expected_freqlist[i][1]);
 			return FALSE;

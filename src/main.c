@@ -56,8 +56,7 @@ int main(int argc, char *argv[])
 	int r = fq_data_init_resources(data, NULL);	// Initialize resources (files)
 	switch (r) {
 		case ERROR_FILE_NOT_FOUND:
-			fprintf(stderr, "%s error: The input file '%s' cannot be opened.\n",
-					  argv[0], data->filename_in);
+			fprintf(stderr, "Error: The input file `%s' cannot be opened.\n", data->filename_in);
 			  fq_data_free_resources(data);
 			  exit(ERROR_FILE_NOT_FOUND);
 		case ERROR_MEM:
@@ -98,11 +97,11 @@ fq_data* init_options(int argc, char *argv[])
 //                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 //                } else
                	if (isprint (optopt)) {
-                    fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+                    fprintf(stderr, "Error: unknown option `-%c'.\n", optopt);
 					fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
                 } else {
                     fprintf(stderr,
-                            "Unknown option character `\\x%x'.\n",
+                            "Error: unknown option character `\\x%x'.\n",
                             optopt);
                 }
 				exit(ERROR_PARAM);
@@ -112,7 +111,7 @@ fq_data* init_options(int argc, char *argv[])
         if (!data->filename_in) {
             data->filename_in = argv[index];
         } else {
-            fprintf(stderr, "%s error: extra operand '%s'\n", argv[0], argv[index]);
+            fprintf(stderr, "Error: extra operand `%s'\n", argv[index]);
             fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
             exit(ERROR_PARAM);
         }
