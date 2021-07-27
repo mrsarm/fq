@@ -29,5 +29,6 @@ add_custom_target(clean-all
                        ${CMAKE_BINARY_DIR}/Makefile
                        ${CMAKE_BINARY_DIR}/CMakeFiles
                        ${CMAKE_BINARY_DIR}/install_manifest.txt
+                       ${CMAKE_BINARY_DIR}/cmake-build-debug
              && rmdir  ${CMAKE_BINARY_DIR}/out
 )
