@@ -30,11 +30,11 @@
  * the encoding process: input file, frequency list, etc.
  */
 typedef struct _fq_data {
-	char *filename_in;			/* Input file name */
-	FILE *fi;					/* Input file manager */
-	unsigned long length_in;	/* File size in bytes */
-	freqlist *freql;			/* Frequency list of characters */
-	int verbose;				/* If TRUE the verbose mode is activated */
+    char *filename_in;          /* Input file name */
+    FILE *fi;                   /* Input file manager */
+    unsigned long length_in;    /* File size in bytes */
+    freqlist *freql;            /* Frequency list of characters */
+    int verbose;                /* If TRUE the verbose mode is activated */
 } fq_data;
 
 

@@ -18,8 +18,8 @@
    <http://www.gnu.org/licenses/>.  */
 
 
-#ifndef __FQ_FREQLIST_H
-#define __FQ_FREQLIST_H
+#ifndef _FREQLIST_H
+#define _FREQLIST_H
 
 
 #include <stdio.h>
@@ -39,19 +39,19 @@
  */
 typedef struct _node_freqlist
 {
-   unsigned char symb;				/* Referenced symbol. */
-   unsigned char pos;				/* Position in the list starting in 0
+    unsigned char symb;             /* Referenced symbol. */
+    unsigned char pos;              /* Position in the list starting in 0
                                        the first element in the list
                                        (higher frequency) */
-   unsigned long freq;				/* Occurrences of the character
-									   in the stream (frequency). */
-   struct _node_freqlist *prev;		/* Pointer to the previous node in
-									   the list, with frequency greater
-									   or equal than this. */
-   struct _node_freqlist *next;		/* Pointer to the next node in the list,
-									   with frequency less or equal
-									   than this. */
-   int debug_last_jump;             /* Number of symbols jumped in freqlist
+    unsigned long freq;             /* Occurrences of the character
+                                       in the stream (frequency). */
+    struct _node_freqlist *prev;    /* Pointer to the previous node in
+                                       the list, with frequency greater
+                                       or equal than this. */
+    struct _node_freqlist *next;    /* Pointer to the next node in the list,
+                                       with frequency less or equal
+                                       than this. */
+    int debug_last_jump;            /* Number of symbols jumped in freqlist
                                        last time symbol was found, e.g. if
                                        symbol was in pos 4 and them went to
                                        pos 1, the value will be 3 */
@@ -64,14 +64,14 @@ typedef struct _node_freqlist
  */
 typedef struct _freqlist
 {
-	node_freqlist *list;					/* Pointer to the first node
-											   (with the highest frequency). */
-	int autosort;							/* TRUE if the list must be sorted
-											   each time a symbol is added */
-	unsigned char freqs[256];				/* Frequencies of each symbol. */
-	unsigned int length;					/* Numbers of different symbols
-											   in the list. */
-	unsigned long size;						/* Numbers of symbols in the list. */
+    node_freqlist *list;            /* Pointer to the first node
+                                       (with the highest frequency). */
+    int autosort;                   /* TRUE if the list must be sorted
+                                       each time a symbol is added */
+    unsigned char freqs[256];       /* Frequencies of each symbol. */
+    unsigned int length;            /* Numbers of different symbols
+                                       in the list. */
+    unsigned long size;             /* Numbers of symbols in the list. */
 } freqlist;
 
 
@@ -126,4 +126,4 @@ int freqlist_sort(freqlist *l);
 int node_cmp(const node_freqlist *pnode1, const node_freqlist *pnode2);
 
 
-#endif /* __FQ_FREQLIST_H */
+#endif /* _FREQLIST_H */

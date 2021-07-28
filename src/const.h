@@ -24,14 +24,13 @@
 
 #ifndef TRUE
 
-#define TRUE							1
-#define FALSE							0
+#define TRUE                            1
+#define FALSE                           0
 
 #endif /* TRUE */
 
-#define ERROR_MEM						-2				/* Insufficient memory error. */
-#define ERROR_PARAM						-3				/* Command line parametrization error. */
-#define ERROR_FILE_NOT_FOUND			-5				/* The input file is not found or can not
-														   be opened. */
-
+#define ERROR_MEM                       -2      /* Insufficient memory error. */
+#define ERROR_PARAM                     -3      /* Command line parametrization error. */
+#define ERROR_FILE_NOT_FOUND            -5      /* The input file is not found or can not
+                                                   be opened. */
 #endif /* __FQ_CONST_H */
