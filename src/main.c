@@ -93,10 +93,7 @@ fq_data* init_options(int argc, char *argv[])
                 data->verbose = TRUE;
                 break;
             case '?':
-//                if (optopt == 'c') {
-//                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-//                } else
-                   if (isprint (optopt)) {
+                if (isprint (optopt)) {
                     fprintf(stderr, "Unknown option `-%c'.\n", optopt);
                     fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
                 } else {
