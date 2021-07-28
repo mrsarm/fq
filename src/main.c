@@ -50,10 +50,10 @@ fq_data* data;
 
 int main(int argc, char *argv[])
 {
-    data = init_options(argc, argv);            // Initialize data with command the arguments
     signal(SIGINT, ctrlc_handler);              // Initialize Ctrl+C signal
+    data = init_options(argc, argv);            // Initialize data with the command arguments
 
-    int r = fq_data_init_resources(data, NULL); // Initialize resources (files)
+    int r = fq_data_init_resources(data);       // Initialize resources (files)
     switch (r) {
         case ERROR_FILE_NOT_FOUND:
             fprintf(stderr, "Error: The input file `%s' cannot be opened.\n", data->filename_in);

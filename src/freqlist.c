@@ -24,16 +24,15 @@
 
 
 /*
- * Prints the list of frequencies.
+ * Print the list of frequencies.
  * @f: the output stream, eg. the stdout.
- * @title: prints this message before the list (optional).
+ * @title: print this message before the list (optional).
  * @freql: the frequency list.
  * @pnode: if not null the symbol is highlighted in
  *         the list (optional).
  */
 void freqlist_fprintf(FILE *f, const char *title,
-                      const freqlist *freql, node_freqlist *pnode)
-{
+                      const freqlist *freql, node_freqlist *pnode) {
     if (title)
         fprintf(f, title);
     char *mark = "";
@@ -64,11 +63,10 @@ void freqlist_fprintf(FILE *f, const char *title,
 
 
 /*
- * Creates a list, and initializes the first node with the passed value.
- * Returns the list created.
+ * Create a list, and initialize the first node with the passed value.
+ * Return the list created.
  */
-freqlist* freqlist_create(unsigned char c)
-{
+freqlist* freqlist_create(unsigned char c) {
     freqlist *l = (freqlist *)malloc(sizeof(freqlist));
     if (l) {
         l->list=(node_freqlist *)malloc(sizeof(node_freqlist));
@@ -90,10 +88,9 @@ freqlist* freqlist_create(unsigned char c)
 }
 
 /*
- * Frees the memory of the list.
+ * Free the memory of the list.
  */
-void freqlist_free(freqlist* l)
-{
+void freqlist_free(freqlist* l) {
     node_freqlist *pnode;
     pnode=l->list;
     while (pnode->next)
@@ -108,11 +105,10 @@ void freqlist_free(freqlist* l)
 
 
 /*
- * Returns the node with the symbol 'c', or return NULL if not
+ * Return the node with the symbol 'c', or return NULL if not
  * in the list.
  */
-node_freqlist *freqlist_find(const freqlist *l, unsigned char c)
-{
+node_freqlist *freqlist_find(const freqlist *l, unsigned char c) {
     /* TODO Check if the node exist with l.freqs[c] > 0
             to be more efficient */
     node_freqlist *pnode = l->list;
@@ -124,13 +120,12 @@ node_freqlist *freqlist_find(const freqlist *l, unsigned char c)
 
 
 /*
- * Increases the frequency of the symbol 'c' in +1,
- * and rearranges if necessary. If the symbol is not present
- * in the list, it adds them, an sets the frequency of the node in 1.
- * Returns the node with the symbol.
+ * Increase the frequency of the symbol 'c' in +1,
+ * and rearrange if necessary. If the symbol is not present
+ * in the list, add them, an set the frequency of the node in 1.
+ * Return the node with the symbol.
  */
-node_freqlist *freqlist_add(freqlist *l, unsigned char c)
-{
+node_freqlist *freqlist_add(freqlist *l, unsigned char c) {
     node_freqlist *pnode1, *pnode_prev;
 
     /* This function promotes the position of the symbol in the list
@@ -176,10 +171,9 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c)
 }
 
 
-/* Promotes the position of the symbol in the list
+/* Promote the position of the symbol in the list
    (called after its frequency was increased, or after being created. */
-void _freqlist_promote(freqlist *l, node_freqlist *pnode)
-{
+void _freqlist_promote(freqlist *l, node_freqlist *pnode) {
     unsigned char i;
     int steps = 0;      /* num of elements walked until reached new pos */
 
@@ -242,8 +236,7 @@ void _freqlist_promote(freqlist *l, node_freqlist *pnode)
 /* This function dis-promotes the position of the symbol in the list
    after decrease its frequency.
    Return 1 if element if removed from the list, otherwise 0 */
-int _freqlist_dispromote(freqlist *l, node_freqlist *pnode)
-{
+int _freqlist_dispromote(freqlist *l, node_freqlist *pnode) {
     node_freqlist *pnode1, *pnode2, *pnode3=NULL;
 
     /* If the node has freq=0 is removed from the list */
@@ -342,7 +335,7 @@ int _freqlist_dispromote(freqlist *l, node_freqlist *pnode)
  * If pnode0 is NULL, then l->list = pnode (first element
  * in the list).
  *
- * Returns 1 if the element were swapped, else 0.
+ * Return 1 if the element were swapped, else 0.
  */
 int _freqlist_swap_with_prev(freqlist *l, node_freqlist * pnode) {
     if (pnode->prev) {
@@ -371,8 +364,8 @@ int _freqlist_swap_with_prev(freqlist *l, node_freqlist * pnode) {
 
 
 /*
- * Sorts the frequencies in case aren't sort.
- * Returns the number of swaps made.
+ * Sort the frequencies in case aren't sort.
+ * Return the number of swaps made.
  */
 int freqlist_sort(freqlist *l) {
     int swaps = 0;
@@ -395,11 +388,10 @@ int freqlist_sort(freqlist *l) {
 
 
 /*
- * Compares by frequency of the node,
- * or symbol if the frequencies are equals.
+ * Compare by frequency of the node,
+ * or symbol if the frequencies are equal.
  */
-int node_cmp(const node_freqlist *pnode1, const node_freqlist *pnode2)
-{
+int node_cmp(const node_freqlist *pnode1, const node_freqlist *pnode2) {
     if ( pnode1->freq > pnode2->freq
          || (pnode1->freq == pnode2->freq && pnode1->symb < pnode2->symb) ) {
         return 1;

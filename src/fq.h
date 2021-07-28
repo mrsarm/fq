@@ -26,7 +26,7 @@
 
 
 /*
- * Contains the main information about
+ * Contain the main information about
  * the encoding process: input file, frequency list, etc.
  */
 typedef struct _fq_data {
@@ -48,24 +48,25 @@ fq_data* fq_data_init(void);
 
 
 /*
- * Initialization of input data structures.
- * Opens data->filename_in in "rb" mode, if it's
- * NULL, it uses stdin as data->fi file.
- * Returns `0` if no errors, or an error code.
+ * Initialization of input data structure
+ * from the given file name.
+ * Open data->filename_in in "rb" mode, if it's
+ * NULL, use stdin as data->fi file.
+ * Return `0` if no errors, otherwise an error code.
  */
-int fq_data_init_resources(fq_data *data, char *filename_in);
+int fq_data_init_resources(fq_data *data);
 
 
 /*
  * Initialization of input/output data structures
  * from the given file.
- * Returns `0` if no errors, or an error code.
+ * Return `0` if no errors, or an error code.
  */
 int fq_data_init_resources_fi(fq_data *data, FILE *fi);
 
 
 /*
- * Initializes the freql struct of data
+ * Initialize the freql struct of data
  * with the first symbol available in the
  * input stream. Return a pointer
  * to the struct created.
@@ -80,13 +81,13 @@ void fq_data_free_resources(fq_data *data);
 
 
 /*
- * Counts the frequencies.
+ * Count the frequencies.
  */
 int fq_count(fq_data *data);
 
 
 /*
- * Prints an insufficient memory error in the stderr, and aborts
+ * Print an insufficient memory error in the stderr, and aborts
  * the program after invoking the fq_data_free_resources function.
  */
 void error_mem(void(free_resources)(fq_data*), fq_data* data);

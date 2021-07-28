@@ -76,34 +76,34 @@ typedef struct _freqlist
 
 
 /*
- * Creates a list, and initializes the first node with the passed value.
- * Returns the list created.
+ * Create a list, and initialize the first node with the passed value.
+ * Return the list created.
  */
 freqlist* freqlist_create(unsigned char c);
 
 /*
- * Frees the memory of the list.
+ * Free the memory of the list.
  */
 void freqlist_free(freqlist* l);
 
 /*
- * Returns the node with the symbol 'c', or return NULL if not
+ * Return the node with the symbol 'c', or return NULL if not
  * in the list.
  */
 node_freqlist *freqlist_find(const freqlist* l, unsigned char c);
 
 /*
- * Increases the frequency of the symbol 'c' in +1,
- * and rearranges if necessary. If the symbol is not present
- * in the list, it adds them, an sets the frequency of the node in 1.
- * Returns the node with the symbol.
+ * Increase the frequency of the symbol 'c' in +1,
+ * and rearrange if necessary. If the symbol is not present
+ * in the list, add them, an set the frequency of the node in 1.
+ * Return the node with the symbol.
  */
 node_freqlist *freqlist_add(freqlist *l, unsigned char c);
 
 /*
- * Prints the list of frequencies.
+ * Print the list of frequencies.
  * @f: the output stream, eg. the stdout.
- * @title: prints this message before the list (optional).
+ * @title: print this message before the list (optional).
  * @freql: the frequency list.
  * @pnode: if not null the symbol is highlighted in
  *         the list (optional).
@@ -113,15 +113,15 @@ void freqlist_fprintf(FILE *f, const char *title,
 
 
 /*
- * Sorts the frequencies in case aren't sort.
- * Returns the number of swaps made.
+ * Sort the frequencies in case aren't sort.
+ * Return the number of swaps made.
  */
 int freqlist_sort(freqlist *l);
 
 
 /*
- * Compares by frequency of the node,
- * or symbol if the frequencies are equals.
+ * Compare by frequency of the node,
+ * or symbol if the frequencies are equal.
  */
 int node_cmp(const node_freqlist *pnode1, const node_freqlist *pnode2);
 

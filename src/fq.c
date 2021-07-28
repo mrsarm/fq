@@ -43,20 +43,15 @@ fq_data *fq_data_init(void) {
 
 
 /*
- * Initialization of input/output data structures
+ * Initialization of input data structure
  * from the given file name.
- * Opens data->filename_in in "rb" mode, if it's
- * NULL, it uses stdin as data->fi file.
- * Returns `0` if no errors, otherwise an error code.
+ * Open data->filename_in in "rb" mode, if it's
+ * NULL, use stdin as data->fi file.
+ * Return `0` if no errors, otherwise an error code.
  */
-int fq_data_init_resources(fq_data *data, char *filename_in)
-{
-    if (filename_in) {
-        data->filename_in = malloc(strlen(filename_in)+1);
-        strcpy(data->filename_in, filename_in);
-    }
-    /* Open the file in binary mode / read only */
+int fq_data_init_resources(fq_data *data) {
     if (data->filename_in && strcmp(data->filename_in, "-")) {
+        /* Open the file in binary mode / read only */
         data->fi = fopen(data->filename_in, "rb");
         if (!data->fi) {
             return ERROR_FILE_NOT_FOUND;
@@ -72,10 +67,9 @@ int fq_data_init_resources(fq_data *data, char *filename_in)
 /*
  * Initialization of input/output data structures
  * from the given file.
- * Returns `0` if no errors, or an error code.
+ * Return `0` if no errors, or an error code.
  */
-int fq_data_init_resources_fi(fq_data *data, FILE *fi)
-{
+int fq_data_init_resources_fi(fq_data *data, FILE *fi) {
     data->fi = fi;
     data->length_in = 0l;
     return 0;
@@ -83,7 +77,7 @@ int fq_data_init_resources_fi(fq_data *data, FILE *fi)
 
 
 /*
- * Initializes the freql struct of data
+ * Initialize the freql struct of data
  * with the first symbol available in the
  * input stream. Return a pointer
  * to the struct created.
@@ -102,8 +96,7 @@ int fq_data_init_freql(fq_data *data) {
 /*
  * Free all input/output resources of the application.
  */
-void fq_data_free_resources(fq_data *data)
-{
+void fq_data_free_resources(fq_data *data) {
     if (data->fi) fclose(data->fi);
     if (data->freql) freqlist_free(data->freql);
     free(data);
@@ -111,7 +104,7 @@ void fq_data_free_resources(fq_data *data)
 
 
 /*
- * Counts the frequencies.
+ * Count the frequencies.
  */
 int fq_count(fq_data *data) {
     if (!data->freql) {
@@ -143,11 +136,10 @@ int fq_count(fq_data *data) {
 
 
 /*
- * Prints an insufficient memory error in the stderr, and aborts
+ * Print an insufficient memory error in the stderr, and aborts
  * the program after invoking the fq_data_free_resources function.
  */
-void error_mem(void(free_resources)(fq_data*), fq_data* data)
-{
+void error_mem(void(free_resources)(fq_data*), fq_data* data) {
     if (free_resources) {
         free_resources(data);
     }
