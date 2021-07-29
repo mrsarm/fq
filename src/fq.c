@@ -95,7 +95,10 @@ int fq_data_init_freql(fq_data *data) {
  * Free all input/output resources of the application.
  */
 void fq_data_free_resources(fq_data *data) {
-    if (data->fi) fclose(data->fi);
+    if (data->fi) {
+        fflush(data->fi);
+        if (data->fi != stdin) fclose(data->fi);
+    }
     if (data->freql) freqlist_free(data->freql);
     free(data);
 }
