@@ -33,4 +33,5 @@
 #define ERROR_PARAM                     -3      /* Command line parametrization error. */
 #define ERROR_FILE_NOT_FOUND            -5      /* The input file is not found or can not
                                                    be opened. */
+
 #endif /* __FQ_CONST_H */
