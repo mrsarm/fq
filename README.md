@@ -148,7 +148,7 @@ The project uses *CMakes* to build the executable.
 
        $ make
 
-3. Then execute with:
+3. Then execute with (use with `-h` to see available options):
 
        $ out/fq
 
