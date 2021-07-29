@@ -60,9 +60,8 @@ int fq_data_init_resources(fq_data *data);
 /*
  * Initialization of input/output data structures
  * from the given file.
- * Return `0` if no errors, or an error code.
  */
-int fq_data_init_resources_fi(fq_data *data, FILE *fi);
+void fq_data_init_resources_fi(fq_data *data, FILE *fi);
 
 
 /*
