@@ -55,17 +55,23 @@ int main(int argc, char *argv[])
 
     int r = fq_data_init_resources(data);               // Initialize resources (files)
     switch (r) {
+        case OK: break;
         case ERROR_FILE_NOT_FOUND:
             fprintf(stderr, "Error: The input file `%s' cannot be opened.\n", data->filename_in);
             fq_data_free_resources(data);
             exit(ERROR_FILE_NOT_FOUND);
         case ERROR_MEM:
             error_mem(fq_data_free_resources, data);
+        default:
+            error_unknown_code(r, "fq_data_init_resources", fq_data_free_resources, data);
     }
     r = fq_count(data);                                 // Count the symbols
     switch (r) {
+        case OK: break;
         case ERROR_MEM:
             error_mem(fq_data_free_resources, data);
+        default:
+            error_unknown_code(r, "fq_count", fq_data_free_resources, data);
     }
 
     freqlist_fprintf(                                   // Print the frequencies

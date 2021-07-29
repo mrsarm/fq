@@ -47,7 +47,7 @@ fq_data *fq_data_init(void) {
  * from the given file name.
  * Open data->filename_in in "rb" mode, if it's
  * NULL, use stdin as data->fi file.
- * Return `0` if no errors, otherwise an error code.
+ * Return 0 if no errors, otherwise an error code.
  */
 int fq_data_init_resources(fq_data *data) {
     if (data->filename_in && strcmp(data->filename_in, "-")) {
@@ -135,15 +135,39 @@ int fq_count(fq_data *data) {
     return 0;
 }
 
-
 /*
- * Print an insufficient memory error in the stderr, and aborts
- * the program after invoking the fq_data_free_resources function.
+ * Print an error message with error_code and from string in the stderr, and abort
+ * the program after invoking the free_resources function.
  */
-void error_mem(void(free_resources)(fq_data*), fq_data* data) {
+void error_unknown_code(int error_code, char *from,
+                        void(free_resources)(fq_data*), fq_data* data) {
     if (free_resources) {
         free_resources(data);
     }
-    fprintf(stderr, "Error: Insufficient memory.\n");
-    exit(ERROR_MEM);
+    fprintf(stderr, "Error: unknown error code [%d] from `%s'.\n", error_code, from);
+    exit(ERROR_UNKNOWN);
+}
+
+/*
+ * Print error_code in the stderr, and abort
+ * the program after invoking the free_resources function.
+ */
+void fatal(int error_code,
+           char *error_msg,
+           void(free_resources)(fq_data*), fq_data* data) {
+    if (free_resources) {
+        free_resources(data);
+    }
+    fprintf(stderr, error_msg);
+    exit(error_code);
+}
+
+
+/*
+ * Print an insufficient memory error in the stderr, and abort
+ * the program after invoking the free_resources function.
+ */
+void error_mem(void(free_resources)(fq_data*), fq_data* data) {
+    fatal(ERROR_MEM, "Error: Insufficient memory.\n",
+          free_resources, data);
 }

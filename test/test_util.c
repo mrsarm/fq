@@ -39,8 +39,11 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length, i
 
 	int r = fq_count(data);
 	switch (r) {
+        case OK: break;
 		case ERROR_MEM:
 			error_mem(free_resources, data);
+        default:
+            error_unknown_code(r, "fq_count", fq_data_free_resources, data);
 	}
 
 	freqlist_fprintf(stdout, "> Final frequency table\n", data->freql, NULL);
