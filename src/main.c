@@ -57,9 +57,7 @@ int main(int argc, char *argv[])
     switch (r) {
         case OK: break;
         case ERROR_FILE_NOT_FOUND:
-            fprintf(stderr, "Error: The input file `%s' cannot be opened.\n", data->filename_in);
-            fq_data_free_resources(data);
-            exit(ERROR_FILE_NOT_FOUND);
+            error_cannot_open(r, "input", data->filename_in, fq_data_free_resources, data);
         case ERROR_MEM:
             error_mem(fq_data_free_resources, data);
         default:
@@ -114,7 +112,7 @@ fq_data* init_options(int argc, char *argv[])
         if (!data->filename_in) {
             data->filename_in = argv[index];
         } else {
-            fprintf(stderr, "%s error: extra operand `%s'\n", argv[0], argv[index]);
+            fprintf(stderr, "Error: extra operand `%s'\n", argv[index]);
             fprintf(stderr, "Try '%s -h' for more information.\n", argv[0]);
             exit(ERROR_PARAM);
         }

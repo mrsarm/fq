@@ -149,6 +149,19 @@ void error_unknown_code(int error_code, char *from,
 }
 
 /*
+ * Print an error message in the stderr that the file cannot be opened, and abort
+ * the program after invoking the free_resources function.
+ */
+void error_cannot_open(int error_code, char *file_type, char *filename,
+                       void(free_resources)(fq_data*), fq_data* data) {
+    if (free_resources) {
+        free_resources(data);
+    }
+    fprintf(stderr, "Error: The %s file `%s' cannot be opened.\n", file_type, filename);
+    exit(error_code);
+}
+
+/*
  * Print error_code in the stderr, and abort
  * the program after invoking the free_resources function.
  */
