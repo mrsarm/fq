@@ -21,8 +21,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fq.h"
 #include "const.h"
+#include "util.h"
+#include "fq.h"
 #include "freqlist.h"
 
 
@@ -37,6 +38,7 @@ fq_data *fq_data_init(void) {
         data->filename_in = NULL;
         data->fi = NULL;
         data->freql = NULL;
+        data->length_in = 0l;
     }
     return data;
 }
@@ -59,7 +61,6 @@ int fq_data_init_resources(fq_data *data) {
     } else {
         data->fi = stdin;
     }
-    data->length_in = 0l;
     return 0;
 }
 
@@ -110,7 +111,7 @@ void fq_data_free_resources(fq_data *data) {
 int fq_count(fq_data *data) {
     if (!data->freql) {
         if (!fq_data_init_freql(data)) {
-            error_mem(fq_data_free_resources, data);
+            error_mem((void*)fq_data_free_resources, data);
         }
     }
     node_freqlist *pnode = NULL;
@@ -133,54 +134,4 @@ int fq_count(fq_data *data) {
         freqlist_sort(data->freql);
     }
     return 0;
-}
-
-/*
- * Print an error message with error_code and from string in the stderr, and abort
- * the program after invoking the free_resources function.
- */
-void error_unknown_code(int error_code, char *from,
-                        void(free_resources)(fq_data*), fq_data* data) {
-    if (free_resources) {
-        free_resources(data);
-    }
-    fprintf(stderr, "Error: unknown error code [%d] from `%s'.\n", error_code, from);
-    exit(ERROR_UNKNOWN);
-}
-
-/*
- * Print an error message in the stderr that the file cannot be opened, and abort
- * the program after invoking the free_resources function.
- */
-void error_cannot_open(int error_code, char *file_type, char *filename,
-                       void(free_resources)(fq_data*), fq_data* data) {
-    if (free_resources) {
-        free_resources(data);
-    }
-    fprintf(stderr, "Error: The %s file `%s' cannot be opened.\n", file_type, filename);
-    exit(error_code);
-}
-
-/*
- * Print error_code in the stderr, and abort
- * the program after invoking the free_resources function.
- */
-void fatal(int error_code,
-           char *error_msg,
-           void(free_resources)(fq_data*), fq_data* data) {
-    if (free_resources) {
-        free_resources(data);
-    }
-    fprintf(stderr, error_msg);
-    exit(error_code);
-}
-
-
-/*
- * Print an insufficient memory error in the stderr, and abort
- * the program after invoking the free_resources function.
- */
-void error_mem(void(free_resources)(fq_data*), fq_data* data) {
-    fatal(ERROR_MEM, "Error: Insufficient memory.\n",
-          free_resources, data);
 }

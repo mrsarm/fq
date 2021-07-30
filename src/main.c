@@ -26,6 +26,7 @@
 #include "const.h"
 #include "freqlist.h"
 #include "fq.h"
+#include "util.h"
 
 
 #define USAGE   "Usage: %s [-hv] [FILE]\n" \
@@ -38,6 +39,8 @@
                 "\n" \
                 "With no FILE, or when FILE is -, read standard input.\n" \
                 "\"Frequency Counter\" project v2.0.0-rc1: fq <https://github.com/mrsarm/fq>\n"
+
+#define VERBOSE_TABLE   "> Final frequency table\n"
 
 
 /* Initialize the global variables with the command arguments */
@@ -57,23 +60,22 @@ int main(int argc, char *argv[])
     switch (r) {
         case OK: break;
         case ERROR_FILE_NOT_FOUND:
-            error_cannot_open(r, "input", data->filename_in, fq_data_free_resources, data);
+            error_cannot_open(r, "input", data->filename_in, (void*)fq_data_free_resources, data);
         case ERROR_MEM:
-            error_mem(fq_data_free_resources, data);
+            error_mem((void*)fq_data_free_resources, data);
         default:
-            error_unknown_code(r, "fq_data_init_resources", fq_data_free_resources, data);
+            error_unknown_code(r, "fq_data_init_resources", (void*)fq_data_free_resources, data);
     }
     r = fq_count(data);                                 // Count the symbols
     switch (r) {
         case OK: break;
         case ERROR_MEM:
-            error_mem(fq_data_free_resources, data);
+            error_mem((void*)fq_data_free_resources, data);
         default:
-            error_unknown_code(r, "fq_count", fq_data_free_resources, data);
+            error_unknown_code(r, "fq_count", (void*)fq_data_free_resources, data);
     }
 
-    freqlist_fprintf(                                   // Print the frequencies
-            stdout, "> Final frequency table\n", data->freql, NULL);
+    freqlist_fprintf(stdout, VERBOSE_TABLE, data->freql, NULL);
 
     fq_data_free_resources(data);                       // Close file and free memory
 
@@ -82,8 +84,7 @@ int main(int argc, char *argv[])
 
 
 /* Initialize the global variables with the command options */
-fq_data* init_options(int argc, char *argv[])
-{
+fq_data* init_options(int argc, char *argv[]) {
     fq_data* data = fq_data_init();
     if (!data) error_mem(NULL, NULL);
     opterr = 0;
@@ -128,8 +129,7 @@ void ctrlc_handler(int sig) {
         if (!data->freql->autosort) {
             freqlist_sort(data->freql);
         }
-        freqlist_fprintf(stdout, "> Final frequency table\n",   // Print the frequencies
-                         data->freql, NULL);
+        freqlist_fprintf(stdout, VERBOSE_TABLE, data->freql, NULL);
     }
     exit(0);
 }

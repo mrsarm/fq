@@ -19,14 +19,15 @@
 
 
 #include <stdlib.h>
-#include "test_util.h"
+#include "util_t.h"
 #include "const.h"
+#include "util.h"
 
 
 /**
  * Counts the buffer passed and returns the ``fq_data`` with the output data.
  */
-fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length, int verbose) {
+fq_data* count_buff(unsigned char* buff_in, unsigned int buff_in_length, int verbose) {
 
 	fq_data* data = fq_data_init();
 	if (!data) {
@@ -41,9 +42,9 @@ fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length, i
 	switch (r) {
         case OK: break;
 		case ERROR_MEM:
-			error_mem(free_resources, data);
+			error_mem((void*)free_resources, data);
         default:
-            error_unknown_code(r, "fq_count", fq_data_free_resources, data);
+            error_unknown_code(r, "fq_count", (void*)fq_data_free_resources, data);
 	}
 
 	freqlist_fprintf(stdout, "> Final frequency table\n", data->freql, NULL);

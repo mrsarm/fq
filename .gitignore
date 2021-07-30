@@ -28,6 +28,7 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 out/
+Testing/
 
 # Linux desktop files
 .directory

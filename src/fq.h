@@ -84,34 +84,5 @@ void fq_data_free_resources(fq_data *data);
  */
 int fq_count(fq_data *data);
 
-/*
- * Print an error message with error_code and from string in the stderr, and abort
- * the program after invoking the free_resources function.
- */
-void error_unknown_code(int error_code, char *from,
-                        void(free_resources)(fq_data*), fq_data* data);
-
-/*
- * Print an error message in the stderr that the file cannot be opened, and abort
- * the program after invoking the free_resources function.
- */
-void error_cannot_open(int error_code, char *file_type, char *filename,
-                       void(free_resources)(fq_data*), fq_data* data);
-
-/*
- * Print error_code in the stderr, and abort
- * the program after invoking the free_resources function.
- */
-void fatal(int error_code,
-           char *error_msg,
-           void(free_resources)(fq_data*), fq_data* data);
-
-
-/*
- * Print an insufficient memory error in the stderr, and abort
- * the program after invoking the free_resources function.
- */
-void error_mem(void(free_resources)(fq_data*), fq_data* data);
-
 
 #endif /* __FQ_H */

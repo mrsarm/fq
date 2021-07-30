@@ -21,7 +21,7 @@
 #include "cheat.h"
 #include "const.h"
 #include "fq.h"
-#include "test_util.h"
+#include "util_t.h"
 
 
 CHEAT_DECLARE(
@@ -40,7 +40,7 @@ CHEAT_TEAR_DOWN(
  ***************/
 CHEAT_DECLARE(
 	unsigned char buff_1[] =		    { 4, 2, 3, 3, 6, 3, 4, 2, 6, 8 };
-	unsigned int expected_fq_1[][2] =	{{3,3}, {2,2}, {4,2}, {6,2}, {8,1}};
+	unsigned int expected_fq_1[][2] =	{ {3,3}, {2,2}, {4,2}, {6,2}, {8,1} };
 )
 CHEAT_TEST(expected_buff_out_ok,
 	data=count_buff(buff_1, ARRAY_SIZE(buff_1), FALSE);
@@ -57,7 +57,7 @@ CHEAT_TEST(expected_buff_out_ok_autosort,   // with autosort and verbose
  ***************/
 CHEAT_DECLARE(
 	unsigned char buff_2[] =			{ 0, 5, 3, 2, 2, 8, 5, 0, 6, 18, 10, 0 };
-	unsigned int expected_fq_2[][2] =	{{0,3}, {2,2}, {5,2}, {3,1}, {6,1}, {8,1}, {10,1}, {18,1}};
+	unsigned int expected_fq_2[][2] =	{ {0,3}, {2,2}, {5,2}, {3,1}, {6,1}, {8,1}, {10,1}, {18,1} };
 )
 CHEAT_TEST(expected_buff_out_2_ok,
    data=count_buff(buff_2, ARRAY_SIZE(buff_2), FALSE);
@@ -74,7 +74,7 @@ CHEAT_TEST(expected_buff_out_2_ok_autosort,
  ****************************/
 CHEAT_DECLARE(
 	unsigned char buff_3[] =			{ 'b', 'a', 'n', 'a', 'n', 'a' };
-	unsigned int expected_fq_3[][2] =	{{'a',3}, {'n',2}, {'b',1}};
+	unsigned int expected_fq_3[][2] =	{ {'a',3}, {'n',2}, {'b',1} };
 )
 CHEAT_TEST(expected_buff_out_3_ok,
    data=count_buff(buff_3, ARRAY_SIZE(buff_3), FALSE);

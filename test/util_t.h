@@ -18,8 +18,8 @@
    <http://www.gnu.org/licenses/>.  */
 
 
-#ifndef _FQ_TEST_UTIL_H
-#define _FQ_TEST_UTIL_H
+#ifndef _FQ_UTIL_T_H
+#define _FQ_UTIL_T_H
 
 #include <fq.h>
 
@@ -31,7 +31,7 @@
 /**
  * Counts the buffer passed and returns the ``fq_data`` with the output data.
  */
-fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length, int verbose);
+fq_data* count_buff(unsigned char* buff_in, unsigned int buff_in_length, int verbose);
 
 
 /*
@@ -48,4 +48,4 @@ int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[]
 				   unsigned int expected_length);
 
 
-#endif  /* _FQ_TEST_UTIL_H */
+#endif  /* _FQ_UTIL_T_H */

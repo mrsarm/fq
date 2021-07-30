@@ -34,7 +34,7 @@
 void freqlist_fprintf(FILE *f, const char *title,
                       const freqlist *freql, node_freqlist *pnode) {
     if (title)
-        fprintf(f, title);
+        fprintf(f, "%s", title);
     char *mark = "";
     char markup[16];
     if (pnode) {
@@ -91,15 +91,13 @@ freqlist* freqlist_create(unsigned char c) {
  * Free the memory of the list.
  */
 void freqlist_free(freqlist* l) {
-    node_freqlist *pnode;
-    pnode=l->list;
-    while (pnode->next)
-        pnode=pnode->next;
-    while (pnode->prev) {
-        pnode=pnode->prev;
-        free(pnode->next);
+    node_freqlist *pnode, *pnode_prev;
+    pnode = l->list;
+    while (pnode) {
+        pnode_prev = pnode;
+        pnode = pnode->next;
+        free(pnode_prev);
     }
-    free(pnode);
     free(l);
 }
 
@@ -113,8 +111,7 @@ node_freqlist *freqlist_find(const freqlist *l, unsigned char c) {
             to be more efficient */
     node_freqlist *pnode = l->list;
     while (pnode && c!=pnode->symb) pnode=pnode->next;
-    if (pnode && c==pnode->symb) return pnode;
-    return NULL;
+    return pnode;
 }
 
 

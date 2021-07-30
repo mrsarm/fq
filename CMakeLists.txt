@@ -10,12 +10,13 @@ include_directories("${CMAKE_SOURCE_DIR}/src")
 
 set(BASE_SOURCE_FILES
     src/freqlist.c
-    src/fq.c)
+    src/fq.c
+    src/util.c)
 
-add_executable(fq src/main.c ${BASE_SOURCE_FILES})
+add_executable(fq src/main.c ${BASE_SOURCE_FILES} src/util.c)
 
 set(TEST_SOURCE_FILES
-    test/test_util.c
+    test/util_t.c
     test/test_fq.c)
 
 add_executable(test_fq ${TEST_SOURCE_FILES} ${BASE_SOURCE_FILES})
@@ -30,5 +31,6 @@ add_custom_target(clean-all
                        ${CMAKE_BINARY_DIR}/CMakeFiles
                        ${CMAKE_BINARY_DIR}/cmake-build-debug
                        ${CMAKE_BINARY_DIR}/install_manifest.txt
+                       ${CMAKE_BINARY_DIR}/Testing
              && rmdir  ${CMAKE_BINARY_DIR}/out
 )
