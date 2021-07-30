@@ -80,7 +80,7 @@ void fq_data_init_resources_fi(fq_data *data, FILE *fi) {
  * input stream. Return a pointer
  * to the struct created.
  */
-int fq_data_init_freql(fq_data *data) {
+freqlist *fq_data_init_freql(fq_data *data) {
     int first_symb = fgetc(data->fi);
     if (first_symb != EOF) {
         data->length_in++;
