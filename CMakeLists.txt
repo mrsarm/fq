@@ -13,7 +13,7 @@ set(BASE_SOURCE_FILES
     src/fq.c
     src/util.c)
 
-add_executable(fq src/main.c ${BASE_SOURCE_FILES} src/util.c)
+add_executable(fq src/main.c ${BASE_SOURCE_FILES})
 
 set(TEST_SOURCE_FILES
     test/util_t.c
