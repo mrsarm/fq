@@ -38,7 +38,7 @@ void freqlist_fprintf(FILE *f, const char *title,
     char *mark = "";
     char markup[16];
     if (pnode) {
-        if (freql->freqs[pnode->symb]==1) {
+        if (pnode->freq==1) {
             mark = " *";
         } else if (pnode->debug_last_jump == 0) {
             mark = " <";
@@ -69,8 +69,6 @@ freqlist* freqlist_create() {
     freqlist *l = (freqlist *)malloc(sizeof(freqlist));
     if (l) {
         l->list = NULL;
-        for (int i=0; i<256; i++)
-            l->freqs[i] = 0;
         l->length = 0;
         l->size = 0L;
         l->autosort = FALSE;
@@ -149,7 +147,6 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c) {
        and call the function that will promote the symbol. */
     if (pnode1 && c==pnode1->symb) {
         pnode1->freq++;
-        l->freqs[c]++;
         l->size++;
         if (l->autosort) {
             _freqlist_promote(l, pnode1);
@@ -162,7 +159,6 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c) {
        promotion algorithm. */
     pnode1 = freqlist_create_node(c, 0, 1l);
     if (pnode1) {
-        l->freqs[c]=1;
         l->size++;
         l->length++;
         if (pnode_prev) {

@@ -68,7 +68,6 @@ typedef struct _freqlist
                                        (with the highest frequency). */
     int autosort;                   /* TRUE if the list must be sorted
                                        each time a symbol is added */
-    unsigned char freqs[256];       /* Frequencies of each symbol. */
     unsigned int length;            /* Numbers of different symbols
                                        in the list. */
     unsigned long size;             /* Numbers of symbols in the list. */
