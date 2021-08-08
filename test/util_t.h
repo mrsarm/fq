@@ -41,7 +41,7 @@ void free_resources(fq_data *data);
 
 
 /*
- * Checks if ``list`` is equals to ``expected_freqlist`` (second list is in
+ * Checks if plist is equals to expected_freqlist (second list is in
  * array format).
  */
 int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[][2],

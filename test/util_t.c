@@ -63,7 +63,7 @@ void free_resources(fq_data *data)
 
 
 /*
- * Checks if ``list`` is equals to ``expected_freqlist`` (second list is in
+ * Checks if plist is equals to expected_freqlist (second list is in
  * array format).
  */
 int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[][2],
@@ -86,6 +86,7 @@ int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[]
         if (pnode->pos != i) {
             fprintf(stderr, "Error: different pos value in node. Pos. expected %d - Pos. %d\n",
                             i, pnode->pos);
+            return FALSE;
         }
         pnode = pnode->next;
         i++;
