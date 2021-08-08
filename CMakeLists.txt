@@ -13,13 +13,15 @@ set(BASE_SOURCE_FILES
     src/fq.c
     src/util.c)
 
-add_executable(fq src/main.c ${BASE_SOURCE_FILES})
+add_executable(fq src/main.c
+               ${BASE_SOURCE_FILES})
 
-set(TEST_SOURCE_FILES
-    test/util_t.c
-    test/test_fq.c)
+set(BASE_TEST_SOURCE_FILES
+    test/util_t.c)
 
-add_executable(test_fq ${TEST_SOURCE_FILES} ${BASE_SOURCE_FILES})
+add_executable(test_fq test/test_fq.c
+               ${BASE_TEST_SOURCE_FILES}
+               ${BASE_SOURCE_FILES})
 
 install(TARGETS fq
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
