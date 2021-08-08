@@ -174,9 +174,13 @@ To clean all the compiled binaries and the "Makefiles" files:
 ### Tests
 
 Tests are built with CHEAT <https://github.com/Tuplanolla/cheat>,
-a unit testing framework for C/C++ programming language.
+a unit testing framework for C/C++ programming language, and can
+be executed with CMake CTest:
 
-To run the tests, first build the project and then execute:
+    $ make test
+
+To run the tests and see all the output in the console (specially
+if the tests fail), first build the project (`make`) and then execute:
 
     $ out/test_fq
 
