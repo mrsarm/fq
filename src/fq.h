@@ -65,10 +65,7 @@ void fq_data_init_resources_fi(fq_data *data, FILE *fi);
 
 
 /*
- * Initialize the freql struct of data
- * with the first symbol available in the
- * input stream. Return a pointer
- * to the struct created.
+ * Initialize the freql struct of data.
  */
 freqlist *fq_data_init_freql(fq_data *data);
 

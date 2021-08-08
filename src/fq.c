@@ -76,18 +76,13 @@ void fq_data_init_resources_fi(fq_data *data, FILE *fi) {
 
 
 /*
- * Initialize the freql struct of data
- * with the first symbol available in the
- * input stream. Return a pointer
- * to the struct created.
+ * Initialize the freql struct of data.
  */
 freqlist *fq_data_init_freql(fq_data *data) {
-    int first_symb = fgetc(data->fi);
-    if (first_symb != EOF) {
-        data->length_in++;
-        data->freql = freqlist_create(first_symb);
+    data->freql = freqlist_create();
+    if (data->freql) {
+        data->freql->autosort = data->verbose;
     }
-    data->freql->autosort = data->verbose;
     return data->freql;
 }
 
@@ -114,21 +109,20 @@ int fq_count(fq_data *data) {
             error_mem((void*)fq_data_free_resources, data);
         }
     }
-    node_freqlist *pnode = NULL;
     do {
         unsigned char symbol = fgetc(data->fi);   // A buffer is not used due
         if( feof(data->fi) ) {                    // that any modern OS
-            break ;                               // use one when we use
-        }                                         // the libc library for I/O
-        pnode = freqlist_add(data->freql, symbol);
+            break ;                               // has one provided by
+        }                                         // the libc library when I/O
+        node_freqlist *pnode = freqlist_add(data->freql, symbol);
         if (!pnode) {
             return ERROR_MEM;
         }
+        data->length_in++;
         if(data->verbose) {
             freqlist_fprintf(stdout, NULL, data->freql, pnode);
             printf("\n\n");
         }
-        data->length_in++;
     } while (TRUE);
     if (!data->freql->autosort) {
         freqlist_sort(data->freql);

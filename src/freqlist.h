@@ -76,10 +76,17 @@ typedef struct _freqlist
 
 
 /*
- * Create a list, and initialize the first node with the passed value.
- * Return the list created.
+ * Create a new freqlist.
  */
-freqlist* freqlist_create(unsigned char c);
+freqlist* freqlist_create();
+
+
+/*
+ * Create a new node.
+ */
+node_freqlist* freqlist_create_node(unsigned char c,
+                                    unsigned char pos,
+                                    unsigned long freq);
 
 /*
  * Free the memory of the list.

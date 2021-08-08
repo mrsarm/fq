@@ -63,28 +63,38 @@ void freqlist_fprintf(FILE *f, const char *title,
 
 
 /*
- * Create a list, and initialize the first node with the passed value.
- * Return the list created.
+ * Create a new freqlist.
  */
-freqlist* freqlist_create(unsigned char c) {
+freqlist* freqlist_create() {
     freqlist *l = (freqlist *)malloc(sizeof(freqlist));
     if (l) {
-        l->list=(node_freqlist *)malloc(sizeof(node_freqlist));
-        if (l->list) {
-            l->list->symb=c;
-            l->list->pos=(unsigned char)0;
-            l->list->freq=1;
-            l->list->next=l->list->prev=NULL;
-            l->list->debug_last_jump = 0;
-        }
+        l->list = NULL;
         for (int i=0; i<256; i++)
-            l->freqs[i]=0;
-        l->freqs[c]=1;
-        l->length=1;
-        l->size=1L;
+            l->freqs[i] = 0;
+        l->length = 0;
+        l->size = 0L;
         l->autosort = FALSE;
     }
     return l;
+}
+
+
+/*
+ * Create a new node.
+ */
+node_freqlist* freqlist_create_node(unsigned char c,
+                                    unsigned char pos,
+                                    unsigned long freq) {
+    node_freqlist *pnode = (node_freqlist *)malloc(sizeof(node_freqlist));
+    if (!pnode) {
+        return NULL;
+    }
+    pnode->symb=c;
+    pnode->pos=pos;
+    pnode->freq=freq;
+    pnode->next=pnode->prev=NULL;
+    pnode->debug_last_jump=0;
+    return pnode;
 }
 
 /*
@@ -123,7 +133,7 @@ node_freqlist *freqlist_find(const freqlist *l, unsigned char c) {
  * Return the node with the symbol.
  */
 node_freqlist *freqlist_add(freqlist *l, unsigned char c) {
-    node_freqlist *pnode1, *pnode_prev;
+    node_freqlist *pnode1, *pnode_prev = NULL;
 
     /* This function promotes the position of the symbol in the list
        after increase its frequency, or being created. */
@@ -150,19 +160,19 @@ node_freqlist *freqlist_add(freqlist *l, unsigned char c) {
     /* If the element doesn't exist, it's added to the end of the list,
        with frequency=1, and is promoted in the list with the same
        promotion algorithm. */
-    pnode1=(node_freqlist *)malloc(sizeof(node_freqlist));
+    pnode1 = freqlist_create_node(c, 0, 1l);
     if (pnode1) {
         l->freqs[c]=1;
         l->size++;
         l->length++;
-        pnode1->symb=c;
-        pnode1->pos=pnode_prev->pos + 1;
-        pnode1->freq=1;
-        pnode1->prev=pnode_prev;
-        pnode1->next=NULL;
-        pnode1->debug_last_jump=0;
-        pnode_prev->next=pnode1;
-        _freqlist_promote(l, pnode1);
+        if (pnode_prev) {
+            pnode1->pos=pnode_prev->pos + 1;
+            pnode1->prev=pnode_prev;
+            pnode_prev->next=pnode1;
+            _freqlist_promote(l, pnode1);
+        } else {
+            l->list=pnode1; // First element in the list
+        }
     }
     return pnode1;
 }
