@@ -31,8 +31,7 @@ fq_data* count_buff(unsigned char* buff_in, unsigned int buff_in_length, int ver
 
 	fq_data* data = fq_data_init();
 	if (!data) {
-		fprintf(stderr, "Error: Insufficient memory.\n");
-		exit(ERROR_MEM);
+		error_mem(NULL, NULL);
 	}
 	data->verbose = verbose;
 	// Initialize with a memory stream
