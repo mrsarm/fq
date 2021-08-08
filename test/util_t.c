@@ -29,26 +29,26 @@
  */
 fq_data* count_buff(unsigned char* buff_in, unsigned int buff_in_length, int verbose) {
 
-	fq_data* data = fq_data_init();
-	if (!data) {
-		error_mem(NULL, NULL);
-	}
-	data->verbose = verbose;
-	// Initialize with a memory stream
-	fq_data_init_resources_fi(data, fmemopen(buff_in, buff_in_length, "rb"));
+    fq_data* data = fq_data_init();
+    if (!data) {
+        error_mem(NULL, NULL);
+    }
+    data->verbose = verbose;
+    // Initialize with a memory stream
+    fq_data_init_resources_fi(data, fmemopen(buff_in, buff_in_length, "rb"));
 
-	int r = fq_count(data);
-	switch (r) {
+    int r = fq_count(data);
+    switch (r) {
         case OK: break;
-		case ERROR_MEM:
-			error_mem((void*)free_resources, data);
+        case ERROR_MEM:
+            error_mem((void*)free_resources, data);
         default:
             error_unknown_code(r, "fq_count", (void*)fq_data_free_resources, data);
-	}
+    }
 
-	freqlist_fprintf(stdout, "> Final frequency table\n", data->freql, NULL);
-	if (data->verbose) printf("\n=====================================\n\n");
-	return data;
+    freqlist_fprintf(stdout, "> Final frequency table\n", data->freql, NULL);
+    if (data->verbose) printf("\n=====================================\n\n");
+    return data;
 }
 
 
@@ -57,8 +57,8 @@ fq_data* count_buff(unsigned char* buff_in, unsigned int buff_in_length, int ver
  */
 void free_resources(fq_data *data)
 {
-	if (data->freql) freqlist_free(data->freql);
-	free(data);
+    if (data->freql) freqlist_free(data->freql);
+    free(data);
 }
 
 
@@ -67,28 +67,28 @@ void free_resources(fq_data *data)
  * array format).
  */
 int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[][2],
-				   unsigned int expected_length) {
+                   unsigned int expected_length) {
 
-	if (plist->length !=  expected_length) {
-		fprintf(stderr, "Error: different lengths. plist %d - expected %d\n", plist->length, expected_length);
-		return FALSE;
-	}
-	node_freqlist *pnode = plist->list;
-	int i = 0;
-	while (pnode) {
-		if (pnode->symb != expected_freqlist[i][0]
-				|| pnode->freq != expected_freqlist[i][1]) {
-			fprintf(stderr, "Error: different values in plist. Pos. %d - Symbols %d, %d. "
-							"Frequencies: %lu, %u\n",
-					i, (int)pnode->symb, expected_freqlist[i][0], pnode->freq, expected_freqlist[i][1]);
-			return FALSE;
-		}
-		if (pnode->pos != i) {
-			fprintf(stderr, "Error: different pos value in node. Pos. expected %d - Pos. %d\n",
-					        i, pnode->pos);
-		}
-		pnode = pnode->next;
-		i++;
-	}
-	return TRUE;
+    if (plist->length !=  expected_length) {
+        fprintf(stderr, "Error: different lengths. plist %d - expected %d\n", plist->length, expected_length);
+        return FALSE;
+    }
+    node_freqlist *pnode = plist->list;
+    int i = 0;
+    while (pnode) {
+        if (pnode->symb != expected_freqlist[i][0]
+                || pnode->freq != expected_freqlist[i][1]) {
+            fprintf(stderr, "Error: different values in plist. Pos. %d - Symbols %d, %d. "
+                            "Frequencies: %lu, %u\n",
+                    i, (int)pnode->symb, expected_freqlist[i][0], pnode->freq, expected_freqlist[i][1]);
+            return FALSE;
+        }
+        if (pnode->pos != i) {
+            fprintf(stderr, "Error: different pos value in node. Pos. expected %d - Pos. %d\n",
+                            i, pnode->pos);
+        }
+        pnode = pnode->next;
+        i++;
+    }
+    return TRUE;
 }
