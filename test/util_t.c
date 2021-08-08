@@ -83,6 +83,10 @@ int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[]
 					i, (int)pnode->symb, expected_freqlist[i][0], pnode->freq, expected_freqlist[i][1]);
 			return FALSE;
 		}
+		if (pnode->pos != i) {
+			fprintf(stderr, "Error: different pos value in node. Pos. expected %d - Pos. %d\n",
+					        i, pnode->pos);
+		}
 		pnode = pnode->next;
 		i++;
 	}
