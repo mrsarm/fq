@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 project(fq C)
+
+enable_testing()
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
@@ -10,24 +12,45 @@ include_directories("${CMAKE_SOURCE_DIR}/src")
 
 set(BASE_SOURCE_FILES
     src/freqlist.c
-    src/fq.c)
+    src/fq.c
+    src/util.c)
 
-add_executable(fq src/main.c ${BASE_SOURCE_FILES})
+# Executable "fq"
+add_executable(fq src/main.c
+               ${BASE_SOURCE_FILES})
 
-set(TEST_SOURCE_FILES
-    test/test_util.c
-    test/test_fq.c)
+set(BASE_TEST_SOURCE_FILES
+    test/util_t.c)
 
-add_executable(test_fq ${TEST_SOURCE_FILES} ${BASE_SOURCE_FILES})
+# Executable with unit tests "test_fq"
+add_executable(test_fq test/test_fq.c
+               ${BASE_TEST_SOURCE_FILES}
+               ${BASE_SOURCE_FILES})
 
+# Install with `make install`
 install(TARGETS fq
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
 
+# To trigger dependencies before `make test`
+set_property(DIRECTORY APPEND
+             PROPERTY TEST_INCLUDE_FILES
+             "${CMAKE_CURRENT_BINARY_DIR}/BuildTestTarget.cmake")
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/BuildTestTarget.cmake"
+     "execute_process(COMMAND \"${CMAKE_COMMAND}\""
+     " --build \"${CMAKE_BINARY_DIR}\""
+     " --config \"\$ENV{CMAKE_CONFIG_TYPE}\")")
+
+# Unit tests with `make test`
+add_test(test_fq ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_fq)
+
+# To clean everything: compiled binaries and *make* files
 add_custom_target(clean-all
   make clean && rm -fR ${CMAKE_BINARY_DIR}/CMakeCache.txt
                        ${CMAKE_BINARY_DIR}/cmake_install.cmake
                        ${CMAKE_BINARY_DIR}/Makefile
                        ${CMAKE_BINARY_DIR}/CMakeFiles
+                       ${CMAKE_BINARY_DIR}/cmake-build-debug
                        ${CMAKE_BINARY_DIR}/install_manifest.txt
-             && rmdir  ${CMAKE_BINARY_DIR}/out
+                       ${CMAKE_BINARY_DIR}/Testing
+             && rmdir  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )

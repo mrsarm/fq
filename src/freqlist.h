@@ -18,8 +18,8 @@
    <http://www.gnu.org/licenses/>.  */
 
 
-#ifndef __FQ_FREQLIST_H
-#define __FQ_FREQLIST_H
+#ifndef _FREQLIST_H
+#define _FREQLIST_H
 
 
 #include <stdio.h>
@@ -39,16 +39,22 @@
  */
 typedef struct _node_freqlist
 {
-   unsigned char symb;				/* Referenced symbol. */
-   unsigned char pos;				/* Position in the list */
-   unsigned long freq;				/* Occurrences of the character
-									   in the stream (frequency). */
-   struct _node_freqlist *prev;		/* Pointer to the previous node in
-									   the list, with frequency greater
-									   or equal than this. */
-   struct _node_freqlist *next;		/* Pointer to the next node in the list,
-									   with frequency less or equal
-									   than this. */
+    unsigned char symb;             /* Referenced symbol. */
+    unsigned char pos;              /* Position in the list starting in 0
+                                       the first element in the list
+                                       (higher frequency) */
+    unsigned long freq;             /* Occurrences of the character
+                                       in the stream (frequency). */
+    struct _node_freqlist *prev;    /* Pointer to the previous node in
+                                       the list, with frequency greater
+                                       or equal than this. */
+    struct _node_freqlist *next;    /* Pointer to the next node in the list,
+                                       with frequency less or equal
+                                       than this. */
+    int debug_last_jump;            /* Number of symbols jumped in freqlist
+                                       last time symbol was found, e.g. if
+                                       symbol was in pos 4 and them went to
+                                       pos 1, the value will be 3 */
 } node_freqlist;
 
 
@@ -58,66 +64,72 @@ typedef struct _node_freqlist
  */
 typedef struct _freqlist
 {
-	node_freqlist *list;					/* Pointer to the first node
-											   (with the highest frequency). */
-	int autosort;							/* TRUE if the list must be sorted
-											   each time a symbol is added */
-	unsigned char freqs[256];				/* Frequencies of each symbol. */
-	unsigned int length;					/* Numbers of different symbols
-											   in the list. */
-	unsigned long size;						/* Numbers of symbols in the list. */
+    node_freqlist *list;            /* Pointer to the first node
+                                       (with the highest frequency). */
+    int autosort;                   /* TRUE if the list must be sorted
+                                       each time a symbol is added */
+    unsigned int length;            /* Numbers of different symbols
+                                       in the list. */
+    unsigned long size;             /* Numbers of symbols in the list. */
 } freqlist;
 
 
 /*
- * Creates a list, and initializes the first node with the passed value.
- * Returns the list created.
+ * Create a new freqlist.
  */
-freqlist* freqlist_create(unsigned char c);
+freqlist* freqlist_create();
+
 
 /*
- * Frees the memory of the list.
+ * Create a new node.
+ */
+node_freqlist* freqlist_create_node(unsigned char c,
+                                    unsigned char pos,
+                                    unsigned long freq);
+
+/*
+ * Free the memory of the list.
  */
 void freqlist_free(freqlist* l);
 
 /*
- * Returns the node with the symbol 'c', or return NULL if not
+ * Return the node with the symbol 'c', or return NULL if not
  * in the list.
  */
 node_freqlist *freqlist_find(const freqlist* l, unsigned char c);
 
 /*
- * Increases the frequency of the symbol 'c' in +1,
- * and rearranges if necessary. If the symbol is not present
- * in the list, it adds them, an sets the frequency of the node in 1.
- * Returns the node with the symbol.
+ * Increase the frequency of the symbol 'c' in +1,
+ * and rearrange if necessary. If the symbol is not present
+ * in the list, add them, an set the frequency of the node in 1.
+ * Return the node with the symbol.
  */
 node_freqlist *freqlist_add(freqlist *l, unsigned char c);
 
 /*
- * Prints the list of frequencies.
+ * Print the list of frequencies.
  * @f: the output stream, eg. the stdout.
- * @msg: prints this message before the list (optional).
+ * @title: print this message before the list (optional).
  * @freql: the frequency list.
  * @pnode: if not null the symbol is highlighted in
  *         the list (optional).
  */
-void freqlist_fprintf(FILE *f, const char *msg,
+void freqlist_fprintf(FILE *f, const char *title,
                       const freqlist *freql, node_freqlist *pnode);
 
 
 /*
- * Sorts the frequencies in case aren't sort.
- * Returns the number of swaps made.
+ * Sort the frequencies in case aren't sort.
+ * Return the number of swaps made.
  */
 int freqlist_sort(freqlist *l);
 
 
 /*
- * Compares by frequency of the node,
- * or symbol if the frequencies are equals.
+ * Compare by frequency of the node,
+ * or symbol if the frequencies are equal.
  */
 int node_cmp(const node_freqlist *pnode1, const node_freqlist *pnode2);
 
 
-#endif /* __FQ_FREQLIST_H */
+#endif /* _FREQLIST_H */

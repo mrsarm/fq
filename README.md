@@ -1,37 +1,42 @@
 "Frequency Counter" project
 ===========================
 
-This project is a command line tool named "fq": outputs
-the frequency table of the given input.
+Command line tool "fq": outputs the frequency table of the given input.
 
     $ fq README.md	# Counted only the first 20 chars as example
     > Final frequency table
-    Symb.: 'e' 65   Freq.: 3        Pos.:  0
-    Symb.: ' ' 20   Freq.: 2        Pos.:  1
-    Symb.: '"' 22   Freq.: 2        Pos.:  2
-    Symb.: 'n' 6E   Freq.: 2        Pos.:  3
-    Symb.: 'r' 72   Freq.: 2        Pos.:  4
-    Symb.: 'u' 75   Freq.: 2        Pos.:  5
-    Symb.: 'C' 43   Freq.: 1        Pos.:  6
-    Symb.: 'F' 46   Freq.: 1        Pos.:  7
-    Symb.: 'c' 63   Freq.: 1        Pos.:  8
-    Symb.: 'o' 6F   Freq.: 1        Pos.:  9
-    Symb.: 'q' 71   Freq.: 1        Pos.:  A
-    Symb.: 't' 74   Freq.: 1        Pos.:  B
-    Symb.: 'y' 79   Freq.: 1        Pos.:  C
+	Symbol    Frequency   Pos
+	-------------------------
+	'e' 65            3     0
+	' ' 20            2     1
+	'"' 22            2     2
+	'n' 6E            2     3
+	'r' 72            2     4
+	'u' 75            2     5
+	'C' 43            1     6
+	'F' 46            1     7
+	'c' 63            1     8
+	'o' 6F            1     9
+	'q' 71            1     A
+	't' 74            1     B
+	'y' 79            1     C
+	-------------------------
     Size: 20 - Number of symbols: 13
     
     $ echo "Hello world" | fq
     > Final frequency table
-    Symb.: 'l' 6C   Freq.: 3        Pos.:  0
-    Symb.: 'o' 6F   Freq.: 2        Pos.:  1
-    Symb.: '.' 0A   Freq.: 1        Pos.:  2
-    Symb.: ' ' 20   Freq.: 1        Pos.:  3
-    Symb.: 'H' 48   Freq.: 1        Pos.:  4
-    Symb.: 'd' 64   Freq.: 1        Pos.:  5
-    Symb.: 'e' 65   Freq.: 1        Pos.:  6
-    Symb.: 'r' 72   Freq.: 1        Pos.:  7
-    Symb.: 'w' 77   Freq.: 1        Pos.:  8
+	Symbol    Frequency   Pos
+	-------------------------
+	'l' 6C            3     0
+	'o' 6F            2     1
+	'.' 0A            1     2
+	' ' 20            1     3
+	'H' 48            1     4
+	'd' 64            1     5
+	'e' 65            1     6
+	'r' 72            1     7
+	'w' 77            1     8
+	-------------------------
     Size: 12 - Number of symbols: 9
 
 The frequencies are sorted from the highest to
@@ -42,42 +47,92 @@ Executing it with the `-v` (verbose) argument,
 it iterates the file byte by byte and shows the
 frequencies each time:
 
-	$ echo "banana" | fq -v
-	Symb.: 'a' 61   Freq.: 1        Pos.:  0 *
-	Symb.: 'b' 62   Freq.: 1        Pos.:  1
+	$ echo 'banana!!' | fq -v
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            1     0 *
+	'b' 62            1     1
+	-------------------------
 	Size: 2 - Number of symbols: 2
-	Symb.: 'a' 61
 	
-	Symb.: 'a' 61   Freq.: 1        Pos.:  0
-	Symb.: 'b' 62   Freq.: 1        Pos.:  1
-	Symb.: 'n' 6E   Freq.: 1        Pos.:  2 *
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            1     0
+	'b' 62            1     1
+	'n' 6E            1     2 *
+	-------------------------
 	Size: 3 - Number of symbols: 3
-	Symb.: 'n' 6E
 	
-	Symb.: 'a' 61   Freq.: 2        Pos.:  0 *
-	Symb.: 'b' 62   Freq.: 1        Pos.:  1
-	Symb.: 'n' 6E   Freq.: 1        Pos.:  2
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            2     0 <
+	'b' 62            1     1
+	'n' 6E            1     2
+	-------------------------
 	Size: 4 - Number of symbols: 3
-	Symb.: 'a' 61
 	
-	Symb.: 'a' 61   Freq.: 2        Pos.:  0
-	Symb.: 'n' 6E   Freq.: 2        Pos.:  1 *
-	Symb.: 'b' 62   Freq.: 1        Pos.:  2
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            2     0
+	'n' 6E            2     1 ^ (+1)
+	'b' 62            1     2
+	-------------------------
 	Size: 5 - Number of symbols: 3
-	Symb.: 'n' 6E
 	
-	Symb.: 'a' 61   Freq.: 3        Pos.:  0 *
-	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
-	Symb.: 'b' 62   Freq.: 1        Pos.:  2
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0 <
+	'n' 6E            2     1
+	'b' 62            1     2
+	-------------------------
 	Size: 6 - Number of symbols: 3
-	Symb.: 'a' 61
 	
-	Symb.: 'a' 61   Freq.: 3        Pos.:  0
-	Symb.: 'n' 6E   Freq.: 2        Pos.:  1
-	Symb.: '.' 0A   Freq.: 1        Pos.:  2 *
-	Symb.: 'b' 62   Freq.: 1        Pos.:  3
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0
+	'n' 6E            2     1
+	'!' 21            1     2 *
+	'b' 62            1     3
+	-------------------------
 	Size: 7 - Number of symbols: 4
-	Symb.: '.'  A
+	
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0
+	'!' 21            2     1 ^ (+1)
+	'n' 6E            2     2
+	'b' 62            1     3
+	-------------------------
+	Size: 8 - Number of symbols: 4
+	
+	
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0
+	'!' 21            2     1
+	'n' 6E            2     2
+	'.' 0A            1     3 *
+	'b' 62            1     4
+	-------------------------
+	Size: 9 - Number of symbols: 5
+	
+	
+	> Final frequency table
+	Symbol    Frequency   Pos
+	-------------------------
+	'a' 61            3     0
+	'!' 21            2     1
+	'n' 6E            2     2
+	'.' 0A            1     3
+	'b' 62            1     4
+	-------------------------
+	Size: 9 - Number of symbols: 5
 
 
 Build and execute
@@ -93,7 +148,7 @@ The project uses *CMakes* to build the executable.
 
        $ make
 
-3. Then execute with:
+3. Then execute with (use with `-h` to see available options):
 
        $ out/fq
 
@@ -118,10 +173,14 @@ To clean all the compiled binaries and the "Makefiles" files:
 
 ### Tests
 
-Tests are built with CHEAT <http://users.jyu.fi/~sapekiis/cheat/index.html>,
-an unit testing framework for C/C++ programming language.
+Tests are built with CHEAT <https://github.com/Tuplanolla/cheat>,
+a unit testing framework for C/C++ programming language, and can
+be executed with CMake CTest:
 
-To run the tests, first build the project and then execute:
+    $ make test
+
+To run the tests and see all the output in the console (specially
+if the tests fail), first build the project (`make`) and then execute:
 
     $ out/test_fq
 

@@ -1,6 +1,6 @@
 /* test_util.h
 
-   Copyright (C) 2015-2019 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
    <http://www.gnu.org/licenses/>.  */
 
 
-#ifndef _FQ_TEST_UTIL_H
-#define _FQ_TEST_UTIL_H
+#ifndef _FQ_UTIL_T_H
+#define _FQ_UTIL_T_H
 
 #include <fq.h>
 
@@ -31,7 +31,7 @@
 /**
  * Counts the buffer passed and returns the ``fq_data`` with the output data.
  */
-fq_data* count_buff(const unsigned char* buff_in, unsigned int buff_in_length);
+fq_data* count_buff(unsigned char* buff_in, unsigned int buff_in_length, int verbose);
 
 
 /*
@@ -41,11 +41,11 @@ void free_resources(fq_data *data);
 
 
 /*
- * Checks if ``list`` is equals to ``expected_freqlist`` (second list is in
+ * Checks if plist is equals to expected_freqlist (second list is in
  * array format).
  */
 int freqlist_check(const freqlist* plist, const unsigned int expected_freqlist[][2],
 				   unsigned int expected_length);
 
 
-#endif  /* _FQ_TEST_UTIL_H */
+#endif  /* _FQ_UTIL_T_H */

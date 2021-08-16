@@ -21,8 +21,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fq.h"
 #include "const.h"
+#include "util.h"
+#include "fq.h"
 #include "freqlist.h"
 
 
@@ -31,128 +32,100 @@
  * default values.
  */
 fq_data *fq_data_init(void) {
-	fq_data* data = (fq_data*) malloc(sizeof(fq_data));
-	if (data) {
-		data->verbose = FALSE;
-		data->filename_in = NULL;
-		data->fi = NULL;
-		data->freql = NULL;
-	}
-	return data;
+    fq_data* data = (fq_data*) malloc(sizeof(fq_data));
+    if (data) {
+        data->verbose = FALSE;
+        data->filename_in = NULL;
+        data->fi = NULL;
+        data->freql = NULL;
+        data->length_in = 0l;
+    }
+    return data;
 }
 
 
 /*
- * Initialization of input/output data structures
+ * Initialization of input data structure
  * from the given file name.
- * Opens data->filename_in in "rb" mode, if it's
- * NULL, it uses stdin as data->fi file.
- * Returns `0` if no errors, otherwise an error code.
+ * Open data->filename_in in "rb" mode, if it's
+ * NULL, use stdin as data->fi file.
+ * Return 0 if no errors, otherwise an error code.
  */
-int fq_data_init_resources(fq_data *data, char *filename_in)
-{
-	if (filename_in) {
-		data->filename_in = malloc(strlen(filename_in)+1);
-		strcpy(data->filename_in, filename_in);
-	}
-	/* Open the file in binary mode / read only */
-	if (data->filename_in) {
-		data->fi = fopen(data->filename_in, "rb");
-		if (!data->fi) {
-			return ERROR_FILE_NOT_FOUND;
-		}
-	} else {
-		data->fi = stdin;
-	}
-	data->length_in = 0l;
-	return 0;
+int fq_data_init_resources(fq_data *data) {
+    if (data->filename_in && strcmp(data->filename_in, "-")) {
+        /* Open the file in binary mode / read only */
+        data->fi = fopen(data->filename_in, "rb");
+        if (!data->fi) {
+            return ERROR_FILE_NOT_FOUND;
+        }
+    } else {
+        data->fi = stdin;
+    }
+    return 0;
 }
 
 
 /*
  * Initialization of input/output data structures
  * from the given file.
- * Returns `0` if no errors, or an error code.
  */
-int fq_data_init_resources_fi(fq_data *data, FILE *fi)
-{
-	data->fi = fi;
-	data->length_in = 0l;
-	return 0;
+void fq_data_init_resources_fi(fq_data *data, FILE *fi) {
+    data->fi = fi;
+    data->length_in = 0l;
 }
 
 
 /*
- * Initializes the freql struct of data
- * with the first symbol available in the
- * input stream. Return a pointer
- * to the struct created.
+ * Initialize the freql struct of data.
  */
-int fq_data_init_freql(fq_data *data) {
-	int first_symb = fgetc(data->fi);
-	if (first_symb != EOF) {
-		data->length_in++;
-		data->freql = freqlist_create(first_symb);
-	}
-	data->freql->autosort = data->verbose;
-	return data->freql;
+freqlist *fq_data_init_freql(fq_data *data) {
+    data->freql = freqlist_create();
+    if (data->freql) {
+        data->freql->autosort = data->verbose;
+    }
+    return data->freql;
 }
 
 
 /*
  * Free all input/output resources of the application.
  */
-void fq_data_free_resources(fq_data *data)
-{
-	if (data->fi) fclose(data->fi);
-	if (data->freql) freqlist_free(data->freql);
-	free(data);
+void fq_data_free_resources(fq_data *data) {
+    if (data->fi) {
+        fflush(data->fi);
+        if (data->fi != stdin) fclose(data->fi);
+    }
+    if (data->freql) freqlist_free(data->freql);
+    free(data);
 }
 
 
 /*
- * Counts the frequencies.
+ * Count the frequencies.
  */
 int fq_count(fq_data *data) {
-	if (!data->freql) {
-		if (!fq_data_init_freql(data)) {
-			error_mem(fq_data_free_resources, data);
-		}
-	}
-	node_freqlist *pnode = NULL;
-	do {
-		unsigned char symbol = fgetc(data->fi);	// A buffer is not used due
-		if( feof(data->fi) ) {					// that any modern OS
-			break ;								// use one when we use
-		}										// the libc library for I/O
-		pnode = freqlist_add(data->freql, symbol);
-		if (!pnode) {
-			return ERROR_MEM;
-		}
-		if(data->verbose) {
-			freqlist_fprintf(stdout, NULL, data->freql, pnode);
-			printf("Symb.: '%c' %2X\n\n",
-				   (symbol<0x7F && symbol>=0x20)?symbol:'.',
-				   symbol);
-		}
-		data->length_in++;
-	} while (TRUE);
-	if (!data->freql->autosort) {
-		freqlist_sort(data->freql);
-	}
-	return 0;
-}
-
-
-/*
- * Prints an insufficient memory error in the stderr, and aborts
- * the program after invoking the fq_data_free_resources function.
- */
-void error_mem(void(free_resources)(fq_data*), fq_data* data)
-{
-	if (free_resources) {
-		free_resources(data);
-	}
-	fprintf(stderr, "Error: Insufficient memory.\n");
-	exit(ERROR_MEM);
+    if (!data->freql) {
+        if (!fq_data_init_freql(data)) {
+            error_mem((void*)fq_data_free_resources, data);
+        }
+    }
+    do {
+        unsigned char symbol = fgetc(data->fi);   // A buffer is not used due
+        if( feof(data->fi) ) {                    // that any modern OS
+            break ;                               // has one provided by
+        }                                         // the libc library when I/O
+        node_freqlist *pnode = freqlist_add(data->freql, symbol);
+        if (!pnode) {
+            return ERROR_MEM;
+        }
+        data->length_in++;
+        if(data->verbose) {
+            freqlist_fprintf(stdout, NULL, data->freql, pnode);
+            printf("\n\n");
+        }
+    } while (TRUE);
+    if (!data->freql->autosort) {
+        freqlist_sort(data->freql);
+    }
+    return 0;
 }
