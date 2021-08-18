@@ -38,7 +38,7 @@
                 "  -h       display this help and exit\n" \
                 "\n" \
                 "With no FILE, or when FILE is -, read standard input.\n" \
-                "\"Frequency Counter\" project v2.0.0-rc1: fq <https://github.com/mrsarm/fq>\n"
+                "\"Frequency Counter\" project v2.0.0: fq <https://github.com/mrsarm/fq>\n"
 
 #define VERBOSE_TABLE   "> Final frequency table\n"
 
