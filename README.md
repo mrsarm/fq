@@ -43,6 +43,9 @@ The frequencies are sorted from the highest to
 the lowest, and in case two bytes have the same
 frequency they are sorted "alphabetically".
 
+
+### Verbose mode
+
 Executing it with the `-v` (verbose) argument,
 it iterates the file byte by byte and shows the
 frequencies each time:
@@ -135,6 +138,13 @@ frequencies each time:
 	Size: 9 - Number of symbols: 5
 
 
+And indicator at the right marks what is the current
+symbol found, with `*` when the symbol is found for the first
+time, `<` when it's not the first time and the position in the
+table didn't change, and `^ (+NUM)` when not the first time
+but the position in the table has changed _NUM_ positions.
+
+
 Build and execute
 -----------------
 
@@ -174,8 +184,8 @@ To clean all the compiled binaries and the "Makefiles" files:
 ### Tests
 
 Tests are built with CHEAT <https://github.com/Tuplanolla/cheat>,
-a unit testing framework for C/C++ programming language, and can
-be executed with CMake CTest:
+a unit testing framework for C/C++, and can be executed
+with CMake CTest:
 
     $ make test
 
