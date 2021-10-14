@@ -1,15 +1,24 @@
 name: CMake
 
-on:
-  push:
-    branches: master
-  pull_request:
-    paths-ignore:
-      - '**.md'
+on: [push, pull_request]
 
 jobs:
-  build:
+  pre_job:
+    name: Pre Job
     runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          paths_ignore: '["**.md"]'
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
 
     steps:
     - uses: actions/checkout@v2
@@ -22,4 +31,4 @@ jobs:
 
     - name: Test
       run: ctest
-      
+
