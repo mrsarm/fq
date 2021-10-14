@@ -39,8 +39,8 @@ Command line tool "fq": outputs the frequency table of the given input.
 	-------------------------
     Size: 12 - Number of symbols: 9
 
-The frequencies are sorted from the highest to
-the lowest, and in case two bytes have the same
+The symbols are sorted from the highest to the lowest
+frequencies, and in case two bytes have the same
 frequency they are sorted "alphabetically".
 
 
