@@ -3,6 +3,7 @@
 
 Command line tool "fq": outputs the frequency table of the given input.
 
+
     $ fq README.md	# Counted only the first 20 chars as example
     > Final frequency table
 	Symbol    Frequency   Pos
