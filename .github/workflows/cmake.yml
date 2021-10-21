@@ -32,9 +32,9 @@ jobs:
     - name: Build
       run: make
 
-    # TODO: Remove ! just for testing  
-    - name: Sleep 20
-      run: sleep 20
+    # TODO: Remove ! just for testing
+    - name: Sleep 40
+      run: sleep 40
 
     - name: Test
       run: ctest
