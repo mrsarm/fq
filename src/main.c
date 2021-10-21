@@ -52,7 +52,7 @@ void ctrlc_handler(int sig);
 fq_data* data;
 
 int main(int argc, char *argv[])
-
+{
     signal(SIGINT, ctrlc_handler);                      // Initialize Ctrl+C signal
     data = init_options(argc, argv);                    // Initialize data with the command arguments
 
