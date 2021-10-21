@@ -20,9 +20,12 @@ Debug
 # IDEA/CLion Project files
 .idea
 cmake-build-debug/
+*.cbp
 
 CMake Project files
 CMakeCache.txt
+BuildTestTarget.cmake
+CTestTestfile.cmake
 CMakeFiles/
 Makefile
 cmake_install.cmake
