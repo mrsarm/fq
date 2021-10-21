@@ -17,8 +17,6 @@ jobs:
           skip_after_successful_duplicate: 'false'
           paths_ignore: '["**.md"]'
 
-
-
   build:
     name: Build
     runs-on: ubuntu-latest
