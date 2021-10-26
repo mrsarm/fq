@@ -3,7 +3,6 @@
 
 Command line tool "fq": outputs the frequency table of the given input.
 
-
     $ fq README.md	# Counted only the first 20 chars as example
     > Final frequency table
 	Symbol    Frequency   Pos
@@ -141,7 +140,7 @@ frequencies each time:
 
 And indicator at the right marks what is the current
 symbol found, with `*` when the symbol is found for the first
-time, `<` when it's not the first time and the position in the
+time, `<` when isn't the first time and the position in the
 table didn't change, and `^ (+NUM)` when not the first time
 but the position in the table has changed _NUM_ positions.
 
