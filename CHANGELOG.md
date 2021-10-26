@@ -6,10 +6,10 @@
 -----
 - Frequencies are better formatted as a table.
 - In verbose mode add better marks about the current symbol.
-- Set the input stream as source either with the `-` as file
-  argument or not file argument at all.
-- Fix when interrupting the program with _Ctrl+C_ the frequency
-  output was unsorted.
+- Set the input stream as source either with the `-` as
+  file argument or not file argument at all.
+- Fix when interrupting the program with _Ctrl+C_ the
+  frequency output was unsorted.
 - Fix pointer truncate bug.
 - Better error handling and error messages.
 - A lot of code refactor and formatting. Replace tabs
