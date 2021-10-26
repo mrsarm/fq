@@ -12,6 +12,7 @@ jobs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
       - id: skip_check
+        #TODO Set action to master branch once fix is merged
         uses: fkirc/skip-duplicate-actions@fix_path_skipping
         with:
           skip_after_successful_duplicate: 'false'
