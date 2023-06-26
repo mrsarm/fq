@@ -49,13 +49,23 @@ void freqlist_fprintf(FILE *f, const char *title,
     }
     fprintf(f, "Symbol    Frequency   Pos\n");
     fprintf(f, "-------------------------\n");
-    for (node_freqlist *pnode_i=freql->list; pnode_i; pnode_i=pnode_i->next)
-        fprintf(f, "'%c' %02X    %9lu    %2X%s\n",
-                (pnode_i->symb < 0x7F && pnode_i->symb >= 0x20) ? pnode_i->symb : '.',
+    for (node_freqlist *pnode_i=freql->list; pnode_i; pnode_i=pnode_i->next) {
+        char symb[4];
+        char *psymb;
+        if (pnode_i->symb < 0x7F && pnode_i->symb >= 0x20) {
+            sprintf(symb, "'%c'", pnode_i->symb);
+            psymb = symb;
+        } else {
+            // non-printable symbol
+            psymb = " . ";
+        }
+        fprintf(f, "%s %02X    %9lu    %2X%s\n",
+                psymb,
                 pnode_i->symb,
                 pnode_i->freq,
                 pnode_i->pos,
                 pnode && pnode == pnode_i ? mark : "");
+    }
     fprintf(f, "-------------------------\n");
     fprintf(f, "Size: %lu - Number of symbols: %d\n",
             freql->size, freql->length);
