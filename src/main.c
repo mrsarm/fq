@@ -1,6 +1,6 @@
 /* main.c
 
-   Copyright (C) 2015-2021 Mariano Ruiz <mrsarm@gmail.com>
+   Copyright (C) 2015-2023 Mariano Ruiz <mrsarm@gmail.com>
    This file is part of the "Frequency Counter" project.
 
    This project is free software; you can redistribute it and/or
