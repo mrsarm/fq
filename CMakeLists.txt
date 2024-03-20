@@ -1,6 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.24)
 project(fq C)
 
+include(FetchContent)
 enable_testing()
 
 set(CMAKE_C_STANDARD 99)
@@ -22,10 +23,19 @@ add_executable(fq src/main.c
 set(BASE_TEST_SOURCE_FILES
     test/util_t.c)
 
+FetchContent_Declare(
+        cheat_h
+        URL      https://github.com/Tuplanolla/cheat/archive/refs/tags/1.0.4.tar.gz
+        URL_HASH MD5=30c3edd18d1f6d96e2da0c6682f260b7
+        DOWNLOAD_EXTRACT_TIMESTAMP true
+)
+FetchContent_MakeAvailable(cheat_h)
+
 # Executable with unit tests "test_fq"
 add_executable(test_fq test/test_fq.c
                ${BASE_TEST_SOURCE_FILES}
                ${BASE_SOURCE_FILES})
+target_include_directories(test_fq PUBLIC "${cheat_h_SOURCE_DIR}")
 
 # Install with `make install`
 install(TARGETS fq
@@ -50,7 +60,9 @@ add_custom_target(clean-all
                        ${CMAKE_BINARY_DIR}/Makefile
                        ${CMAKE_BINARY_DIR}/CMakeFiles
                        ${CMAKE_BINARY_DIR}/cmake-build-debug
+                       ${CMAKE_BINARY_DIR}/cmake-build-release
                        ${CMAKE_BINARY_DIR}/install_manifest.txt
                        ${CMAKE_BINARY_DIR}/Testing
+                       ${CMAKE_BINARY_DIR}/_deps
              && rmdir  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )

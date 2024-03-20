@@ -200,6 +200,6 @@ About
 
 Source: https://github.com/mrsarm/fq
 
-Authors: (2015-2023) Mariano Ruiz <mrsarm@gmail.cm>
+Authors: (2015-2024) Mariano Ruiz <mrsarm@gmail.cm>
 
 License: LGPL-3
